@@ -1,6 +1,6 @@
 const router = require("express").Router();
-const controller = require("../controllers/aiController");
+const { generateQuestions } = require("../controllers/aiController");
 
-router.post("/generate", controller.generateQuestions);
+router.post("/generate", generateQuestions);
 
 module.exports = router;
