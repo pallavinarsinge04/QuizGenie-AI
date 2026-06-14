@@ -71,5 +71,11 @@ function AIQuiz() {
     </div>
   );
 }
+await API.post("/quiz", {
+  topic,
+  score,
+  totalQuestions: questions.length,
+  percentage,
+});
 
 export default AIQuiz;

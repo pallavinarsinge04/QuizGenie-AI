@@ -1,5 +1,8 @@
 import Sidebar from "../components/Sidebar";
 import Navbar from "../components/Navbar";
+const res = await API.get("/quiz");
+
+setResults(res.data);
 function QuizHistory() {
   return (
     <div style={{ padding: "20px" }}>
