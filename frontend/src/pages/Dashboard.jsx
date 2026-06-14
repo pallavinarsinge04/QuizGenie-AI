@@ -1,42 +1,38 @@
-import { Link } from "react-router-dom";
+import Sidebar from "../components/Sidebar";
+import Navbar from "../components/Navbar";
+import "../styles/dashboard.css";
 
 function Dashboard() {
   return (
-    <div style={{ padding: "30px" }}>
-      <h1>🎓 QuizGenie AI Dashboard</h1>
-      <p>Welcome to your AI-powered learning platform.</p>
+    <div className="container">
+      <Sidebar />
 
-      <div
-        style={{
-          display: "grid",
-          gridTemplateColumns: "repeat(2, 250px)",
-          gap: "20px",
-          marginTop: "30px",
-        }}
-      >
-        <Link to="/flashcards">
-          <button style={{ width: "100%", height: "80px" }}>
-            📚 Flashcards
-          </button>
-        </Link>
+      <div className="main">
+        <Navbar />
 
-        <Link to="/quiz">
-          <button style={{ width: "100%", height: "80px" }}>
-            🤖 AI Quiz
-          </button>
-        </Link>
+        <div className="cards">
 
-        <Link to="/history">
-          <button style={{ width: "100%", height: "80px" }}>
-            📝 Quiz History
-          </button>
-        </Link>
+          <div className="card">
+            <h2>120</h2>
+            <p>Flashcards</p>
+          </div>
 
-        <Link to="/analytics">
-          <button style={{ width: "100%", height: "80px" }}>
-            📊 Analytics
-          </button>
-        </Link>
+          <div className="card">
+            <h2>32</h2>
+            <p>Quizzes</p>
+          </div>
+
+          <div className="card">
+            <h2>87%</h2>
+            <p>Average Score</p>
+          </div>
+
+          <div className="card">
+            <h2>15</h2>
+            <p>Day Streak</p>
+          </div>
+
+        </div>
       </div>
     </div>
   );
