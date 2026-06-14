@@ -1,13 +1,21 @@
-function Navbar() {
+export default function Navbar() {
   return (
-    <div className="navbar">
-      <h2>Dashboard</h2>
+    <div className="bg-white shadow p-5 flex justify-between">
+
+      <h2 className="text-2xl font-bold">
+        Dashboard
+      </h2>
 
       <div>
-        <span>👤 Welcome, User</span>
+
+        <img
+          src="https://i.pravatar.cc/40"
+          alt="profile"
+          className="rounded-full"
+        />
+
       </div>
+
     </div>
   );
 }
-
-export default Navbar;

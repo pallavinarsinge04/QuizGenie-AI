@@ -1,41 +1,61 @@
 import Sidebar from "../components/Sidebar";
 import Navbar from "../components/Navbar";
-import "../styles/dashboard.css";
+import StatCard from "../components/StatCard";
 
-function Dashboard() {
+export default function Dashboard() {
   return (
-    <div className="container">
+    <div className="flex">
+
       <Sidebar />
 
-      <div className="main">
+      <div className="flex-1 bg-gray-100 min-h-screen">
+
         <Navbar />
 
-        <div className="cards">
+        <div className="p-8">
 
-          <div className="card">
-            <h2>120</h2>
-            <p>Flashcards</p>
+          <div className="grid grid-cols-4 gap-5">
+
+            <StatCard
+              title="Flashcards"
+              value="320"
+            />
+
+            <StatCard
+              title="AI Quizzes"
+              value="65"
+            />
+
+            <StatCard
+              title="Average Score"
+              value="92%"
+            />
+
+            <StatCard
+              title="Study Streak"
+              value="21 Days"
+            />
+
           </div>
 
-          <div className="card">
-            <h2>32</h2>
-            <p>Quizzes</p>
-          </div>
+          <div className="bg-white mt-10 p-8 rounded shadow">
 
-          <div className="card">
-            <h2>87%</h2>
-            <p>Average Score</p>
-          </div>
+            <h2 className="text-2xl font-bold mb-4">
+              Welcome to QuizGenie AI
+            </h2>
 
-          <div className="card">
-            <h2>15</h2>
-            <p>Day Streak</p>
+            <p>
+              Continue learning, generate AI quizzes,
+              manage flashcards, and track your progress
+              from one dashboard.
+            </p>
+
           </div>
 
         </div>
+
       </div>
+
     </div>
   );
 }
-
-export default Dashboard;
