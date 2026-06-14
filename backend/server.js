@@ -17,7 +17,7 @@ app.use("/api/auth", require("./routes/authRoutes"));
 app.use("/api/flashcards", require("./routes/flashcardRoutes"));
 app.use("/api/quiz", require("./routes/quizRoutes"));
 app.use("/api/ai", require("./routes/aiRoutes"));
-
+app.use("/api/admin",require("./routes/adminRoutes"));
 app.listen(5000, () => {
   console.log("Server running on port 5000");
 });
