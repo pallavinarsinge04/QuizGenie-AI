@@ -1,10 +1,19 @@
-const router = require("express").Router();
-const auth = require("../middleware/authMiddleware");
-const controller = require("../controllers/flashcardController");
+const express = require("express");
+const router = express.Router();
 
-router.post("/", auth, controller.create);
-router.get("/", auth, controller.getAll);
-router.put("/:id", auth, controller.update);
-router.delete("/:id", auth, controller.remove);
+const {
+  createFlashcard,
+  getFlashcards,
+  updateFlashcard,
+  deleteFlashcard,
+} = require("../controllers/flashcardController");
+
+router.post("/", createFlashcard);
+
+router.get("/", getFlashcards);
+
+router.put("/:id", updateFlashcard);
+
+router.delete("/:id", deleteFlashcard);
 
 module.exports = router;
