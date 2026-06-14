@@ -1,26 +1,24 @@
 const Flashcard = require("../models/Flashcard");
 
-exports.create = async (req, res) => {
-  const data = await Flashcard.create({
-    userId: req.user,
-    ...req.body,
-  });
-  res.json(data);
+const createFlashcard = async (req, res) => {
+  // code
 };
 
-exports.getAll = async (req, res) => {
-  const data = await Flashcard.find({ userId: req.user });
-  res.json(data);
+const getFlashcards = async (req, res) => {
+  // code
 };
 
-exports.update = async (req, res) => {
-  const data = await Flashcard.findByIdAndUpdate(req.params.id, req.body, {
-    new: true,
-  });
-  res.json(data);
+const updateFlashcard = async (req, res) => {
+  // code
 };
 
-exports.remove = async (req, res) => {
-  await Flashcard.findByIdAndDelete(req.params.id);
-  res.json({ message: "Deleted" });
+const deleteFlashcard = async (req, res) => {
+  // code
+};
+
+module.exports = {
+  createFlashcard,
+  getFlashcards,
+  updateFlashcard,
+  deleteFlashcard,
 };

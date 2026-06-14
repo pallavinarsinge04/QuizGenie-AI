@@ -1,6 +1,11 @@
-const router = require("express").Router();
-const { generateQuestions } = require("../controllers/aiController");
+const express = require("express");
 
-router.post("/generate", generateQuestions);
+const router = express.Router();
+
+const {
+  generateAIQuiz,
+} = require("../controllers/aiController");
+
+router.post("/generate", generateAIQuiz);
 
 module.exports = router;
