@@ -16,11 +16,6 @@ const flashcardSchema = new mongoose.Schema(
       type: String,
       default: "General",
     },
-
-    user: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "User",
-    },
   },
   {
     timestamps: true,

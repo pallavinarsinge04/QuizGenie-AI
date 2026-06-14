@@ -1,5 +1,5 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-
+import Flashcards from "./pages/Flashcards";
 import Dashboard from "./pages/Dashboard";
 
 function App() {
@@ -14,6 +14,10 @@ function App() {
         />
 
       </Routes>
+      <Route
+  path="/flashcards"
+  element={<Flashcards />}
+/>
 
     </BrowserRouter>
   );

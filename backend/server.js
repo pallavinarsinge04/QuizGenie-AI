@@ -18,6 +18,7 @@ app.use(express.json());
 
 // Routes
 app.use("/api/auth", require("./routes/authRoutes"));
+app.use("/api/flashcards", require("./routes/flashcardRoutes"));
 
 // Test Route
 app.get("/", (req, res) => {

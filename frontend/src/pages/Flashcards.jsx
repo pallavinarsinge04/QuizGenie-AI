@@ -1,13 +1,18 @@
 import { useEffect, useState } from "react";
-import API from "../api/axios";
+import {
+  getFlashcards,
+  createFlashcard,
+  deleteFlashcard,
+} from "../api/flashcardApi";
 
-function Flashcards() {
+export default function Flashcards() {
   const [question, setQuestion] = useState("");
   const [answer, setAnswer] = useState("");
+  const [category, setCategory] = useState("");
   const [flashcards, setFlashcards] = useState([]);
 
   const loadFlashcards = async () => {
-    const res = await API.get("/flashcards");
+    const res = await getFlashcards();
     setFlashcards(res.data);
   };
 
@@ -16,69 +21,85 @@ function Flashcards() {
   }, []);
 
   const addFlashcard = async () => {
-    await API.post("/flashcards", {
+    await createFlashcard({
       question,
       answer,
+      category,
     });
 
     setQuestion("");
     setAnswer("");
+    setCategory("");
 
     loadFlashcards();
   };
 
-  const deleteFlashcard = async (id) => {
-    await API.delete(`/flashcards/${id}`);
-
+  const removeFlashcard = async (id) => {
+    await deleteFlashcard(id);
     loadFlashcards();
   };
 
   return (
-    <div style={{ padding: "30px" }}>
-      <h1>Flashcards</h1>
+    <div className="p-10">
+
+      <h1 className="text-3xl font-bold mb-6">
+        Flashcards
+      </h1>
 
       <input
+        className="border p-2 m-2"
         placeholder="Question"
         value={question}
         onChange={(e) => setQuestion(e.target.value)}
       />
 
-      <br />
-      <br />
-
       <input
+        className="border p-2 m-2"
         placeholder="Answer"
         value={answer}
         onChange={(e) => setAnswer(e.target.value)}
       />
 
-      <br />
-      <br />
+      <input
+        className="border p-2 m-2"
+        placeholder="Category"
+        value={category}
+        onChange={(e) => setCategory(e.target.value)}
+      />
 
-      <button onClick={addFlashcard}>Add Flashcard</button>
+      <button
+        className="bg-blue-600 text-white p-2 rounded"
+        onClick={addFlashcard}
+      >
+        Add Flashcard
+      </button>
 
-      <hr />
+      <div className="mt-8">
+        {flashcards.map((card) => (
+          <div
+            key={card._id}
+            className="border p-4 rounded shadow mb-4"
+          >
+            <h2 className="font-bold">
+              {card.question}
+            </h2>
 
-      {flashcards.map((card) => (
-        <div
-          key={card._id}
-          style={{
-            border: "1px solid gray",
-            padding: "15px",
-            marginTop: "15px",
-          }}
-        >
-          <h3>{card.question}</h3>
+            <p>{card.answer}</p>
 
-          <p>{card.answer}</p>
+            <p className="text-gray-500">
+              {card.category}
+            </p>
 
-          <button onClick={() => deleteFlashcard(card._id)}>
-            Delete
-          </button>
-        </div>
-      ))}
+            <button
+              className="bg-red-500 text-white px-3 py-1 mt-2 rounded"
+              onClick={() => removeFlashcard(card._id)}
+            >
+              Delete
+            </button>
+          </div>
+        ))}
+      </div>
+
     </div>
   );
 }
-
-export default Flashcards;
