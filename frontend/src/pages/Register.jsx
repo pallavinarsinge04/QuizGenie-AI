@@ -1,7 +1,8 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import API from "../api/axios";
-
+import Sidebar from "../components/Sidebar";
+import Navbar from "../components/Navbar";
 function Register() {
   const navigate = useNavigate();
 

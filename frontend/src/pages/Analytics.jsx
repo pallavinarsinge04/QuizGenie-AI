@@ -1,3 +1,6 @@
+import Sidebar from "../components/Sidebar";
+import Navbar from "../components/Navbar";
+
 function Analytics() {
   return (
     <div style={{ padding: "20px" }}>

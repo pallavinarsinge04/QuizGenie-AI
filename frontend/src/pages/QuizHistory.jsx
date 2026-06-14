@@ -1,3 +1,5 @@
+import Sidebar from "../components/Sidebar";
+import Navbar from "../components/Navbar";
 function QuizHistory() {
   return (
     <div style={{ padding: "20px" }}>
