@@ -2,26 +2,42 @@ import { Link } from "react-router-dom";
 
 function Dashboard() {
   return (
-    <div>
-      <h1>QuizGenie AI Dashboard</h1>
+    <div style={{ padding: "30px" }}>
+      <h1>🎓 QuizGenie AI Dashboard</h1>
+      <p>Welcome to your AI-powered learning platform.</p>
 
-      <ul>
-        <li>
-          <Link to="/flashcards">Flashcards</Link>
-        </li>
+      <div
+        style={{
+          display: "grid",
+          gridTemplateColumns: "repeat(2, 250px)",
+          gap: "20px",
+          marginTop: "30px",
+        }}
+      >
+        <Link to="/flashcards">
+          <button style={{ width: "100%", height: "80px" }}>
+            📚 Flashcards
+          </button>
+        </Link>
 
-        <li>
-          <Link to="/quiz">AI Quiz</Link>
-        </li>
+        <Link to="/quiz">
+          <button style={{ width: "100%", height: "80px" }}>
+            🤖 AI Quiz
+          </button>
+        </Link>
 
-        <li>
-          <Link to="/history">Quiz History</Link>
-        </li>
+        <Link to="/history">
+          <button style={{ width: "100%", height: "80px" }}>
+            📝 Quiz History
+          </button>
+        </Link>
 
-        <li>
-          <Link to="/analytics">Analytics</Link>
-        </li>
-      </ul>
+        <Link to="/analytics">
+          <button style={{ width: "100%", height: "80px" }}>
+            📊 Analytics
+          </button>
+        </Link>
+      </div>
     </div>
   );
 }
