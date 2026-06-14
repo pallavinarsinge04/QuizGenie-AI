@@ -1,16 +1,28 @@
-import Sidebar from "../components/Sidebar";
-import Navbar from "../components/Navbar";
+import { useEffect, useState } from "react";
+import API from "../api/axios";
 
 function Analytics() {
+  const [data, setData] = useState({});
+
+  useEffect(() => {
+    loadAnalytics();
+  }, []);
+
+  const loadAnalytics = async () => {
+    const res = await API.get("/analytics");
+    setData(res.data);
+  };
+
   return (
-    <div style={{ padding: "20px" }}>
-      <h1>📊 Analytics</h1>
+    <div style={{ padding: "30px" }}>
+      <h1>📊 Learning Analytics</h1>
 
-      <h3>Total Quizzes : 0</h3>
-
-      <h3>Average Score : 0%</h3>
-
-      <h3>Learning Streak : 0 Days</h3>
+      <div>
+        <h2>Total Quizzes: {data.totalQuizzes}</h2>
+        <h2>Total Flashcards: {data.totalFlashcards}</h2>
+        <h2>Average Score: {data.averageScore}%</h2>
+        <h2>Best Score: {data.bestScore}%</h2>
+      </div>
     </div>
   );
 }
