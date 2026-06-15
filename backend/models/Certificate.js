@@ -2,11 +2,11 @@ const mongoose = require("mongoose");
 
 const certificateSchema = new mongoose.Schema(
   {
-    name: String,
+    user: String,
 
-    title: String,
+    course: String,
 
-    score: Number,
+    issuedDate: Date,
   },
   {
     timestamps: true,

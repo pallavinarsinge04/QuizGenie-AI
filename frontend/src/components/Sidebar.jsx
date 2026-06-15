@@ -1,55 +1,45 @@
 import { Link } from "react-router-dom";
 
-export default function Sidebar() {
+function Sidebar() {
   return (
     <div
       style={{
-        width: "250px",
+        width: "220px",
         minHeight: "100vh",
         background: "#1e293b",
-        color: "white",
         padding: "20px",
       }}
     >
-      <h2>QuizGenie AI</h2>
+      <Link to="/dashboard">Dashboard</Link>
+      <br /><br />
 
-      <hr />
+      <Link to="/quiz">AI Quiz</Link>
+      <br /><br />
 
-      <p>
-        <Link to="/dashboard" style={{ color: "white" }}>
-          Dashboard
-        </Link>
-      </p>
+      <Link to="/flashcards">Flashcards</Link>
+      <br /><br />
 
-      <p>
-        <Link to="/flashcards" style={{ color: "white" }}>
-          Flashcards
-        </Link>
-      </p>
+      <Link to="/history">History</Link>
+      <br /><br />
 
-      <p>
-        <Link to="/quiz" style={{ color: "white" }}>
-          AI Quiz
-        </Link>
-      </p>
+      <Link to="/analytics">Analytics</Link>
+      <br /><br />
 
-      <p>
-        <Link to="/history" style={{ color: "white" }}>
-          Quiz History
-        </Link>
-      </p>
+      <Link to="/certificate">Certificate</Link>
+      <br /><br />
 
-      <p>
-        <Link to="/analytics" style={{ color: "white" }}>
-          Analytics
-        </Link>
-      </p>
+      <Link to="/community">Community</Link>
+      <br /><br />
 
-      <p>
-        <Link to="/profile" style={{ color: "white" }}>
-          Profile
-        </Link>
-      </p>
+      <Link to="/chat">Chat</Link>
+      <br /><br />
+
+      <Link to="/videos">Videos</Link>
+      <br /><br />
+
+      <Link to="/leaderboard">Leaderboard</Link>
     </div>
   );
 }
+
+export default Sidebar;

@@ -1,13 +1,10 @@
-export default function Profile() {
+function Profile() {
   return (
-    <div style={{ padding: 20 }}>
-      <h1>My Profile</h1>
-
-      <p>Name</p>
-
-      <p>Email</p>
-
-      <button>Edit Profile</button>
+    <div style={{ padding: "20px" }}>
+      <h1>👤 Profile</h1>
+      <p>Welcome to your profile page.</p>
     </div>
   );
 }
+
+export default Profile;

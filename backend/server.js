@@ -1,28 +1,25 @@
 const express = require("express");
+const mongoose = require("mongoose");
 const cors = require("cors");
-const dotenv = require("dotenv");
+require("dotenv").config();
+
 const connectDB = require("./config/db");
 
-dotenv.config();
+const app = express();
 
-// Connect Database
 connectDB();
 
-const app = express();
-app.use("/api/battle", require("./routes/battleRoutes"));
-// Middleware
 app.use(cors());
-
-// This line is REQUIRED to read JSON from Postman
 app.use(express.json());
 
-// Routes
 app.use("/api/auth", require("./routes/authRoutes"));
+app.use("/api/users", require("./routes/userRoutes"));
+app.use("/api/quiz", require("./routes/quizRoutes"));
 app.use("/api/flashcards", require("./routes/flashcardRoutes"));
+app.use("/api/ai", require("./routes/aiRoutes"));
 
-// Test Route
 app.get("/", (req, res) => {
-  res.send("QuizGenie AI Backend Running...");
+  res.send("QuizGenie AI Backend Running");
 });
 
 const PORT = process.env.PORT || 5000;

@@ -1,5 +1,20 @@
-import Layout from "../components/Layout";
+import Navbar from "../components/Navbar";
+import Sidebar from "../components/Sidebar";
 
-export default function DashboardLayout({ children }) {
-  return <Layout>{children}</Layout>;
+function DashboardLayout({ children }) {
+  return (
+    <div style={{ display: "flex" }}>
+      <Sidebar />
+
+      <div style={{ flex: 1 }}>
+        <Navbar />
+
+        <div style={{ padding: "20px" }}>
+          {children}
+        </div>
+      </div>
+    </div>
+  );
 }
+
+export default DashboardLayout;

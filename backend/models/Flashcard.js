@@ -2,20 +2,11 @@ const mongoose = require("mongoose");
 
 const flashcardSchema = new mongoose.Schema(
   {
-    question: {
-      type: String,
-      required: true,
-    },
+    question: String,
 
-    answer: {
-      type: String,
-      required: true,
-    },
+    answer: String,
 
-    category: {
-      type: String,
-      default: "General",
-    },
+    category: String,
   },
   {
     timestamps: true,

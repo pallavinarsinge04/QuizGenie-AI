@@ -2,13 +2,19 @@ const mongoose = require("mongoose");
 
 const quizSchema = new mongoose.Schema(
   {
-    userId: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
     topic: String,
+
     score: Number,
+
     totalQuestions: Number,
-    answers: Array,
+
+    percentage: Number,
+
+    userId: String,
   },
-  { timestamps: true }
+  {
+    timestamps: true,
+  }
 );
 
 module.exports = mongoose.model("Quiz", quizSchema);
