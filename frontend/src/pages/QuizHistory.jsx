@@ -1,16 +1,31 @@
-import Sidebar from "../components/Sidebar";
-import Navbar from "../components/Navbar";
-const res = await API.get("/quiz");
+import { useEffect, useState } from "react";
+import API from "../api/axios";
 
-setResults(res.data);
-function QuizHistory() {
+export default function QuizHistory() {
+  const [history, setHistory] = useState([]);
+
+  useEffect(() => {
+    loadHistory();
+  }, []);
+
+  const loadHistory = async () => {
+    const res = await API.get("/quiz");
+    setHistory(res.data);
+  };
+
   return (
-    <div style={{ padding: "20px" }}>
-      <h1>📝 Quiz History</h1>
+    <div style={{ padding: 20 }}>
+      <h1>Quiz History</h1>
 
-      <p>No quizzes attempted yet.</p>
+      {history.map((quiz) => (
+        <div key={quiz._id}>
+          <h3>{quiz.topic}</h3>
+
+          <p>Score: {quiz.score}</p>
+
+          <p>{quiz.percentage}%</p>
+        </div>
+      ))}
     </div>
   );
 }
-
-export default QuizHistory;

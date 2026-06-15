@@ -1,96 +1,56 @@
 import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
 import API from "../api/axios";
-import Sidebar from "../components/Sidebar";
-import Navbar from "../components/Navbar";
-function Register() {
-  const navigate = useNavigate();
 
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+export default function Register() {
+  const [form, setForm] = useState({
+    name: "",
+    email: "",
+    password: "",
+  });
 
-  const registerUser = async () => {
+  const register = async () => {
     try {
-      await API.post("/auth/register", {
-        name,
-        email,
-        password,
-      });
-
-      alert("Registration successful!");
-      navigate("/");
-    } catch (error) {
-      alert("Registration failed");
-      console.log(error);
+      await API.post("/auth/register", form);
+      alert("Registration Successful");
+      window.location.href = "/";
+    } catch (err) {
+      alert("Registration Failed");
     }
   };
 
   return (
-    <div
-      style={{
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        height: "100vh",
-        background: "#f5f5f5",
-      }}
-    >
-      <div
-        style={{
-          width: "380px",
-          padding: "30px",
-          background: "white",
-          borderRadius: "10px",
-          boxShadow: "0 0 10px rgba(0,0,0,0.1)",
-        }}
-      >
-        <h1 style={{ textAlign: "center" }}>QuizGenie AI</h1>
-        <h2 style={{ textAlign: "center" }}>Register</h2>
+    <div style={{ padding: 30 }}>
+      <h1>Register</h1>
 
-        <input
-          type="text"
-          placeholder="Full Name"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-          style={{ width: "100%", padding: "10px", marginTop: "15px" }}
-        />
+      <input
+        placeholder="Name"
+        onChange={(e) =>
+          setForm({ ...form, name: e.target.value })
+        }
+      />
 
-        <input
-          type="email"
-          placeholder="Email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          style={{ width: "100%", padding: "10px", marginTop: "15px" }}
-        />
+      <br /><br />
 
-        <input
-          type="password"
-          placeholder="Password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          style={{ width: "100%", padding: "10px", marginTop: "15px" }}
-        />
+      <input
+        placeholder="Email"
+        onChange={(e) =>
+          setForm({ ...form, email: e.target.value })
+        }
+      />
 
-        <button
-          onClick={registerUser}
-          style={{
-            width: "100%",
-            padding: "12px",
-            marginTop: "20px",
-            cursor: "pointer",
-          }}
-        >
-          Register
-        </button>
+      <br /><br />
 
-        <p style={{ textAlign: "center", marginTop: "20px" }}>
-          Already have an account?{" "}
-          <Link to="/">Login</Link>
-        </p>
-      </div>
+      <input
+        type="password"
+        placeholder="Password"
+        onChange={(e) =>
+          setForm({ ...form, password: e.target.value })
+        }
+      />
+
+      <br /><br />
+
+      <button onClick={register}>Register</button>
     </div>
   );
 }
-
-export default Register;
