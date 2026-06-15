@@ -1,49 +1,55 @@
 import { Link } from "react-router-dom";
-import {
-  FaHome,
-  FaBook,
-  FaRobot,
-  FaChartBar,
-  FaUser
-} from "react-icons/fa";
 
 export default function Sidebar() {
   return (
-    <div className="w-64 bg-blue-900 text-white h-screen p-5">
+    <div
+      style={{
+        width: "250px",
+        minHeight: "100vh",
+        background: "#1e293b",
+        color: "white",
+        padding: "20px",
+      }}
+    >
+      <h2>QuizGenie AI</h2>
 
-      <h1 className="text-3xl font-bold mb-10">
-        QuizGenie AI
-      </h1>
+      <hr />
 
-      <nav className="space-y-5">
-
-        <Link to="/dashboard" className="flex items-center gap-3 hover:text-yellow-300">
-          <FaHome />
+      <p>
+        <Link to="/dashboard" style={{ color: "white" }}>
           Dashboard
         </Link>
+      </p>
 
-        <Link to="/flashcards" className="flex items-center gap-3 hover:text-yellow-300">
-          <FaBook />
+      <p>
+        <Link to="/flashcards" style={{ color: "white" }}>
           Flashcards
         </Link>
+      </p>
 
-        <Link to="/quiz" className="flex items-center gap-3 hover:text-yellow-300">
-          <FaRobot />
+      <p>
+        <Link to="/quiz" style={{ color: "white" }}>
           AI Quiz
         </Link>
+      </p>
 
-        <Link to="/analytics" className="flex items-center gap-3 hover:text-yellow-300">
-          <FaChartBar />
+      <p>
+        <Link to="/history" style={{ color: "white" }}>
+          Quiz History
+        </Link>
+      </p>
+
+      <p>
+        <Link to="/analytics" style={{ color: "white" }}>
           Analytics
         </Link>
+      </p>
 
-        <Link to="/profile" className="flex items-center gap-3 hover:text-yellow-300">
-          <FaUser />
+      <p>
+        <Link to="/profile" style={{ color: "white" }}>
           Profile
         </Link>
-
-      </nav>
-
+      </p>
     </div>
   );
 }

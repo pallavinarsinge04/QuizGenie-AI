@@ -1,18 +1,20 @@
 export default function StatCard({
   title,
-  value
+  value,
 }) {
   return (
-    <div className="bg-white rounded-lg shadow p-6">
+    <div
+      style={{
+        background: "white",
+        padding: "20px",
+        borderRadius: "10px",
+        boxShadow: "0px 2px 10px gray",
+        width: "220px",
+      }}
+    >
+      <h3>{title}</h3>
 
-      <h3 className="text-gray-500">
-        {title}
-      </h3>
-
-      <h1 className="text-3xl font-bold mt-3">
-        {value}
-      </h1>
-
+      <h1>{value}</h1>
     </div>
   );
 }
