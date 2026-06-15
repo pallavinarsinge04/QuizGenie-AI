@@ -16,5 +16,4 @@ function NotificationCard({ notification }) {
     </div>
   );
 }
-
 export default NotificationCard;
