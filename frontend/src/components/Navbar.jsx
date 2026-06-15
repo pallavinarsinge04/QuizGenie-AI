@@ -1,13 +1,23 @@
+import { Link } from "react-router-dom";
+
 export default function Navbar() {
   return (
-    <div
+    <nav
       style={{
-        background: "#2563eb",
-        color: "white",
+        display: "flex",
+        justifyContent: "space-between",
         padding: "15px",
+        background: "#2563eb",
+        color: "#fff",
       }}
     >
-      <h2>QuizGenie AI Dashboard</h2>
-    </div>
+      <h2>QuizGenie AI</h2>
+
+      <div>
+        <Link to="/dashboard">Dashboard</Link>{" | "}
+        <Link to="/profile">Profile</Link>{" | "}
+        <Link to="/">Logout</Link>
+      </div>
+    </nav>
   );
 }

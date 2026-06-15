@@ -1,19 +1,17 @@
-export default function QuizCard({
-  quiz,
-}) {
+export default function QuizCard({ question }) {
   return (
     <div
       style={{
         border: "1px solid #ddd",
         padding: "20px",
-        marginBottom: "15px",
+        marginTop: "20px",
       }}
     >
-      <h3>{quiz.topic}</h3>
+      <h3>{question.question}</h3>
 
-      <p>Score: {quiz.score}</p>
-
-      <p>Percentage: {quiz.percentage}%</p>
+      {question.options.map((option, index) => (
+        <p key={index}>{option}</p>
+      ))}
     </div>
   );
 }

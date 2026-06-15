@@ -7,6 +7,9 @@ import Flashcards from "./pages/Flashcards";
 import AIQuiz from "./pages/AIQuiz";
 import QuizHistory from "./pages/QuizHistory";
 import Analytics from "./pages/Analytics";
+import Certificate from "./pages/Certificate";
+import VideoLearning from "./pages/VideoLearning";
+import ChatAssistant from "./pages/ChatAssistant";
 
 function App() {
   return (
@@ -19,6 +22,9 @@ function App() {
         <Route path="/quiz" element={<AIQuiz />} />
         <Route path="/history" element={<QuizHistory />} />
         <Route path="/analytics" element={<Analytics />} />
+        <Route path="/certificate" element={<Certificate />} />
+        <Route path="/videos" element={<VideoLearning />} />
+        <Route path="/chat" element={<ChatAssistant />} />
       </Routes>
     </BrowserRouter>
   );
