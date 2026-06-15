@@ -9,7 +9,7 @@ dotenv.config();
 connectDB();
 
 const app = express();
-
+app.use("/api/battle", require("./routes/battleRoutes"));
 // Middleware
 app.use(cors());
 

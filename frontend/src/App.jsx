@@ -1,5 +1,6 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-
+import LiveQuiz from "./pages/LiveQuiz";
+import QuizBattle from "./pages/QuizBattle";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Dashboard from "./pages/Dashboard";
@@ -25,6 +26,8 @@ function App() {
         <Route path="/certificate" element={<Certificate />} />
         <Route path="/videos" element={<VideoLearning />} />
         <Route path="/chat" element={<ChatAssistant />} />
+        <Route path="/livequiz" element={<LiveQuiz />} />
+        <Route path="/battle" element={<QuizBattle />} />
       </Routes>
     </BrowserRouter>
   );
