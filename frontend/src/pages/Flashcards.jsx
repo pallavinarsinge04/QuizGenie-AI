@@ -1,38 +1,99 @@
-import { useEffect, useState } from "react";
-import API from "../api/axios";
+import { useState } from "react";
+import Sidebar from "../components/Sidebar";
+import Navbar from "../components/Navbar";
+import "./Flashcards.css";
 
-export default function Flashcards() {
-  const [cards, setCards] = useState([]);
+function Flashcards() {
+  const [question, setQuestion] = useState("");
+  const [answer, setAnswer] = useState("");
 
-  useEffect(() => {
-    loadCards();
-  }, []);
+  const [flashcards, setFlashcards] = useState([
+    {
+      id: 1,
+      question: "What is React?",
+      answer: "A JavaScript Library for UI.",
+    },
+    {
+      id: 2,
+      question: "What is JSX?",
+      answer: "JavaScript XML Syntax.",
+    },
+  ]);
 
-  const loadCards = async () => {
-    const res = await API.get("/flashcards");
-    setCards(res.data);
+  const addFlashcard = () => {
+    if (!question || !answer) return;
+
+    setFlashcards([
+      ...flashcards,
+      {
+        id: Date.now(),
+        question,
+        answer,
+      },
+    ]);
+
+    setQuestion("");
+    setAnswer("");
+  };
+
+  const deleteCard = (id) => {
+    setFlashcards(flashcards.filter((item) => item.id !== id));
   };
 
   return (
-    <div style={{ padding: 20 }}>
-      <h1>Flashcards</h1>
+    <div className="flash-layout">
+      <Sidebar />
 
-      {cards.map((card) => (
-        <div
-          key={card._id}
-          style={{
-            border: "1px solid gray",
-            padding: 10,
-            marginTop: 10,
-          }}
-        >
-          <h3>{card.question}</h3>
+      <div className="flash-main">
+        <Navbar />
 
-          <p>{card.answer}</p>
+        <div className="flash-container">
+          <h1>📚 Flashcards</h1>
 
-          <small>{card.category}</small>
+          <div className="add-card">
+            <input
+              placeholder="Question"
+              value={question}
+              onChange={(e) => setQuestion(e.target.value)}
+            />
+
+            <input
+              placeholder="Answer"
+              value={answer}
+              onChange={(e) => setAnswer(e.target.value)}
+            />
+
+            <button onClick={addFlashcard}>
+              Add Flashcard
+            </button>
+          </div>
+
+          <div className="cards-grid">
+            {flashcards.map((card) => (
+              <div className="flash-card" key={card.id}>
+                <h3>{card.question}</h3>
+
+                <p>{card.answer}</p>
+
+                <div className="btn-group">
+                  <button className="edit-btn">
+                    Edit
+                  </button>
+
+                  <button
+                    className="delete-btn"
+                    onClick={() => deleteCard(card.id)}
+                  >
+                    Delete
+                  </button>
+                </div>
+              </div>
+            ))}
+          </div>
         </div>
-      ))}
+      </div>
     </div>
   );
 }
+
+export default Flashcards;

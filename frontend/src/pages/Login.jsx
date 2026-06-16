@@ -1,7 +1,10 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import API from "../api/axios";
 
 export default function Login() {
+  const navigate = useNavigate();
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
@@ -13,7 +16,8 @@ export default function Login() {
       });
 
       localStorage.setItem("token", res.data.token);
-      window.location.href = "/dashboard";
+
+      navigate("/dashboard");
     } catch (err) {
       alert("Login Failed");
     }
@@ -25,18 +29,22 @@ export default function Login() {
 
       <input
         placeholder="Email"
+        value={email}
         onChange={(e) => setEmail(e.target.value)}
       />
 
-      <br /><br />
+      <br />
+      <br />
 
       <input
         type="password"
         placeholder="Password"
+        value={password}
         onChange={(e) => setPassword(e.target.value)}
       />
 
-      <br /><br />
+      <br />
+      <br />
 
       <button onClick={loginUser}>Login</button>
     </div>

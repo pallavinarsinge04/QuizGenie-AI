@@ -1,7 +1,10 @@
 import { useState } from "react";
 import API from "../api/axios";
+import Sidebar from "../components/Sidebar";
+import Navbar from "../components/Navbar";
+import "./AIQuiz.css";
 
-export default function AIQuiz() {
+function AIQuiz() {
   const [topic, setTopic] = useState("");
   const [questions, setQuestions] = useState([]);
 
@@ -12,34 +15,54 @@ export default function AIQuiz() {
       });
 
       setQuestions(res.data.questions || []);
-    } catch (err) {
-      alert("Quiz generation failed");
+    } catch (error) {
+      console.log(error);
+      alert("Failed to generate quiz");
     }
   };
 
   return (
-    <div style={{ padding: 20 }}>
-      <h1>AI Quiz Generator</h1>
+    <div className="layout">
+      <Sidebar />
 
-      <input
-        placeholder="Enter Topic"
-        value={topic}
-        onChange={(e) => setTopic(e.target.value)}
-      />
+      <div className="main-content">
+        <Navbar />
 
-      <button onClick={generateQuiz}>
-        Generate
-      </button>
+        <div className="quiz-container">
+          <h1>🤖 AI Quiz Generator</h1>
 
-      {questions.map((q, index) => (
-        <div key={index}>
-          <h3>{q.question}</h3>
+          <div className="search-box">
+            <input
+              type="text"
+              placeholder="Enter Topic (React, Java, Python...)"
+              value={topic}
+              onChange={(e) => setTopic(e.target.value)}
+            />
 
-          {q.options?.map((option, i) => (
-            <p key={i}>{option}</p>
-          ))}
+            <button onClick={generateQuiz}>
+              Generate Quiz
+            </button>
+          </div>
+
+          <div className="question-list">
+            {questions.map((item, index) => (
+              <div className="question-card" key={index}>
+                <h3>
+                  {index + 1}. {item.question}
+                </h3>
+
+                {item.options?.map((option, i) => (
+                  <div className="option" key={i}>
+                    {option}
+                  </div>
+                ))}
+              </div>
+            ))}
+          </div>
         </div>
-      ))}
+      </div>
     </div>
   );
 }
+
+export default AIQuiz;
