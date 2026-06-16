@@ -1,35 +1,34 @@
 import { Link } from "react-router-dom";
+import "./Sidebar.css";
 
 function Sidebar() {
   return (
-    <div
-      style={{
-        width: "250px",
-        background: "#1e293b",
-        minHeight: "100vh",
-        padding: "20px",
-      }}
-    >
-      <h2 style={{ color: "white" }}>QuizGenie AI</h2>
+    <div className="sidebar">
 
-      <br />
+      <h2>QuizGenie</h2>
 
       <Link to="/dashboard">🏠 Dashboard</Link>
-      <br /><br />
 
       <Link to="/quiz">🤖 AI Quiz</Link>
-      <br /><br />
 
       <Link to="/flashcards">📚 Flashcards</Link>
-      <br /><br />
 
       <Link to="/history">📝 Quiz History</Link>
-      <br /><br />
 
-      <Link to="/analytics">📈 Analytics</Link>
-      <br /><br />
+      <Link to="/analytics">📊 Analytics</Link>
+
+      <Link to="/certificate">🏆 Certificate</Link>
+
+      <Link to="/community">👥 Community</Link>
+
+      <Link to="/chat">💬 AI Chat</Link>
+
+      <Link to="/videos">🎥 Videos</Link>
+
+      <Link to="/leaderboard">🥇 Leaderboard</Link>
 
       <Link to="/profile">👤 Profile</Link>
+
     </div>
   );
 }

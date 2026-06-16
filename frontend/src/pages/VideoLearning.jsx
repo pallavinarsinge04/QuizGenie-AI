@@ -6,7 +6,7 @@ export default function VideoLearning() {
     <Layout>
       <h1>Video Learning</h1>
 
-      <VideoPlayer url="https://www.youtube.com/embed/dGcsHMXbSOA" />
+      <VideoPlayer url="https://youtu.be/XV-lIaO00H8?t=3" />
     </Layout>
   );
 }
