@@ -1,44 +1,50 @@
 import { useState } from "react";
-import { useNavigate, Link } from "react-router-dom";
-import API from "../api/axios";
+import axios from "axios";
 import "./Login.css";
 
-export default function Login() {
-  const navigate = useNavigate();
-
+function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
 
-  const loginUser = async () => {
+  // ================= LOGIN API =================
+  const handleLogin = async () => {
     try {
-      const res = await API.post("/auth/login", {
+      setLoading(true);
+
+      const res = await axios.post("http://localhost:5000/api/auth/login", {
         email,
         password,
       });
 
+      console.log(res.data);
+
+      // store user + token
+      localStorage.setItem("user", JSON.stringify(res.data.user));
       localStorage.setItem("token", res.data.token);
 
-      navigate("/dashboard");
-    } catch (err) {
-  console.log(err);
-  console.log(err.response?.data);
+      alert("Login Successful!");
 
-  alert(
-    err.response?.data?.message ||
-    err.response?.data?.error ||
-    "Login Failed"
-  );
+      // redirect
+      window.location.href = "/dashboard";
+
+    } catch (err) {
+      console.log(err.response?.data || err.message);
+      alert(err.response?.data?.message || "Login Failed");
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
-    <div className="login-page">
+    <div className="auth-container">
 
-      <div className="login-card">
+      <div className="auth-card login-card">
 
-        <h1>QuizGenie AI</h1>
-
-        <p>Welcome Back 👋</p>
+        <div className="auth-header">
+          <h2>Welcome Back 👋</h2>
+          <p>Login to continue your journey</p>
+        </div>
 
         <input
           type="email"
@@ -54,20 +60,17 @@ export default function Login() {
           onChange={(e) => setPassword(e.target.value)}
         />
 
-        <button onClick={loginUser}>
-          Login
+        <button onClick={handleLogin} disabled={loading}>
+          {loading ? "Logging in..." : "Login"}
         </button>
 
-        <div className="login-footer">
-          Don't have an account?
-
-          <Link to="/register">
-            Register
-          </Link>
+        <div className="auth-link">
+          Don't have an account? <a href="/register">Register</a>
         </div>
 
       </div>
-
     </div>
   );
 }
+
+export default Login;
