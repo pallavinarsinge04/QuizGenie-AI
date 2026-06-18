@@ -8,17 +8,23 @@ function AIQuiz() {
   const [topic, setTopic] = useState("");
   const [difficulty, setDifficulty] = useState("Easy");
   const [questions, setQuestions] = useState([]);
+
+  const [selectedAnswers, setSelectedAnswers] = useState({});
+  const [score, setScore] = useState(null);
   const [loading, setLoading] = useState(false);
 
+  // ================= GENERATE QUIZ =================
   const generateQuiz = async () => {
-    if (!topic) {
-      alert("Please enter a topic");
-      return;
-    }
-
-    setLoading(true);
-
     try {
+      if (!topic) {
+        alert("Please enter topic");
+        return;
+      }
+
+      setLoading(true);
+      setScore(null);
+      setSelectedAnswers({});
+
       const res = await API.post("/ai/generate", {
         topic,
         difficulty,
@@ -26,11 +32,32 @@ function AIQuiz() {
 
       setQuestions(res.data.questions || []);
     } catch (error) {
-      console.log(error);
+      console.log(error.response?.data || error.message);
       alert("Failed to generate quiz");
     } finally {
       setLoading(false);
     }
+  };
+
+  // ================= SELECT ANSWER =================
+  const handleSelect = (qIndex, option) => {
+    setSelectedAnswers((prev) => ({
+      ...prev,
+      [qIndex]: option,
+    }));
+  };
+
+  // ================= SUBMIT QUIZ =================
+  const submitQuiz = () => {
+    let newScore = 0;
+
+    questions.forEach((q, index) => {
+      if (selectedAnswers[index] === q.answer) {
+        newScore++;
+      }
+    });
+
+    setScore(newScore);
   };
 
   return (
@@ -40,74 +67,71 @@ function AIQuiz() {
       <div className="main-content">
         <Navbar />
 
-        {/* ===== AI QUIZ HEADER SECTION ===== */}
-        <div>
-          <h1>AI Quiz Generator</h1>
-          <p>Create smart quizzes using AI instantly</p>
+        {/* ================= HEADER ================= */}
+        <div className="quiz-header">
+          <h1>🤖 AI Quiz Generator</h1>
+          <p>Generate, Solve & Improve Your Skills</p>
         </div>
 
-        {/* ===== INPUT SECTION ===== */}
-        <div className="quiz-input-section">
-          <div className="input-card">
-            <label>Enter Topic</label>
-            <input
-              type="text"
-              placeholder="React, Java, Python..."
-              value={topic}
-              onChange={(e) => setTopic(e.target.value)}
-            />
-          </div>
+        {/* ================= INPUT SECTION ================= */}
+        <div className="quiz-box">
+          <input
+            type="text"
+            placeholder="Enter Topic (React, Java, Python...)"
+            value={topic}
+            onChange={(e) => setTopic(e.target.value)}
+          />
 
-          <div className="input-card">
-            <label>Select Difficulty</label>
-            <select
-              value={difficulty}
-              onChange={(e) => setDifficulty(e.target.value)}
-            >
-              <option>Easy</option>
-              <option>Medium</option>
-              <option>Hard</option>
-            </select>
-          </div>
+          <select
+            value={difficulty}
+            onChange={(e) => setDifficulty(e.target.value)}
+          >
+            <option>Easy</option>
+            <option>Medium</option>
+            <option>Hard</option>
+          </select>
 
-          <div className="input-card button-card">
-            <button onClick={generateQuiz} disabled={loading}>
-              {loading ? "Generating..." : "Generate Quiz"}
-            </button>
-          </div>
+          <button onClick={generateQuiz}>
+            {loading ? "Generating..." : "Generate Quiz"}
+          </button>
         </div>
 
-        {/* ===== QUIZ SECTION ===== */}
-        <div className="quiz-section">
-          {questions.length === 0 && !loading && (
-            <div className="empty-state">
-              <h3>No Quiz Generated Yet</h3>
-              <p>Enter a topic and click generate</p>
-            </div>
-          )}
+        {/* ================= SCORE ================= */}
+        {score !== null && (
+          <div className="score-box">
+            🎯 Your Score: {score} / {questions.length}
+          </div>
+        )}
 
-          {loading && (
-            <div className="loading">
-              <p>⏳ Generating AI Quiz...</p>
-            </div>
-          )}
-
+        {/* ================= QUESTIONS ================= */}
+        <div className="question-list">
           {questions.map((q, index) => (
-            <div className="quiz-card" key={index}>
+            <div className="question-card" key={index}>
               <h3>
                 {index + 1}. {q.question}
               </h3>
 
-              <div className="options">
-                {q.options?.map((opt, i) => (
-                  <div className="option" key={i}>
-                    {opt}
-                  </div>
-                ))}
-              </div>
+              {q.options?.map((opt, i) => (
+                <div
+                  key={i}
+                  className={`option ${
+                    selectedAnswers[index] === opt ? "selected" : ""
+                  }`}
+                  onClick={() => handleSelect(index, opt)}
+                >
+                  {opt}
+                </div>
+              ))}
             </div>
           ))}
         </div>
+
+        {/* ================= SUBMIT ================= */}
+        {questions.length > 0 && (
+          <button className="submit-btn" onClick={submitQuiz}>
+            Submit Quiz
+          </button>
+        )}
       </div>
     </div>
   );
