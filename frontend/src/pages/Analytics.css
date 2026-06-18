@@ -1,150 +1,148 @@
-.analytics-layout{
-display:flex;
-background:#f5f7fb;
-min-height:100vh;
+/* ===================== LAYOUT ===================== */
+.analytics-layout {
+  display: flex;
+  min-height: 100vh;
+  background: #f8fafc;
 }
 
-.analytics-main{
-flex:1;
+/* MAIN AREA */
+.analytics-main {
+  flex: 1;
+  padding: 20px;
 }
 
-.analytics-container{
-padding:35px;
+/* CONTAINER */
+.analytics-container {
+  padding: 20px;
 }
 
-.analytics-container h1{
-font-size:38px;
-margin-bottom:30px;
-color:#1e293b;
+/* TITLE */
+.analytics-container h1 {
+  font-size: 26px;
+  margin-bottom: 20px;
+  color: #0f172a;
 }
 
-.stats-grid{
-display:grid;
-grid-template-columns:repeat(4,1fr);
-gap:20px;
-margin-bottom:35px;
+/* ===================== STATS ===================== */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 15px;
+  margin-bottom: 30px;
 }
 
-.stat-card{
-background:white;
-padding:25px;
-border-radius:15px;
-text-align:center;
-box-shadow:0 5px 15px rgba(0,0,0,.08);
-transition:.3s;
+.stat-card {
+  background: white;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+  text-align: center;
+  transition: 0.3s;
 }
 
-.stat-card:hover{
-transform:translateY(-5px);
+.stat-card:hover {
+  transform: translateY(-3px);
 }
 
-.stat-card h2{
-font-size:38px;
-color:#2563eb;
-margin-bottom:10px;
+.stat-card h2 {
+  margin: 0;
+  color: #2563eb;
 }
 
-.chart-section{
-display:grid;
-grid-template-columns:2fr 1fr;
-gap:25px;
-margin-bottom:30px;
+.stat-card p {
+  color: #64748b;
 }
 
-.chart-card{
-background:white;
-padding:25px;
-border-radius:15px;
-box-shadow:0 5px 15px rgba(0,0,0,.08);
+/* ===================== CHART SECTION ===================== */
+.chart-section {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  margin-bottom: 30px;
 }
 
-.bars{
-display:flex;
-justify-content:space-between;
-align-items:flex-end;
-height:250px;
-margin-top:20px;
+.chart-card {
+  background: white;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 3px 10px rgba(0,0,0,0.08);
 }
 
-.bar{
-display:flex;
-flex-direction:column;
-align-items:center;
-width:50px;
+.chart-card h2 {
+  margin-bottom: 15px;
+  color: #0f172a;
 }
 
-.bar span{
-width:35px;
-background:#2563eb;
-border-radius:8px 8px 0 0;
-transition:.3s;
+/* ===================== WEEKLY BARS ===================== */
+.bars {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  height: 180px;
+  padding: 10px;
 }
 
-.bar span:hover{
-background:#1d4ed8;
+.bar {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 30px;
 }
 
-.bar p{
-margin-top:10px;
-font-size:14px;
+/* IMPORTANT FIX HERE */
+.bar span {
+  display: block;
+  width: 12px;
+  background: #2563eb;
+  border-radius: 6px;
+  transition: 0.3s;
 }
 
-table{
-width:100%;
-border-collapse:collapse;
-margin-top:20px;
+.bar span:hover {
+  background: #1d4ed8;
 }
 
-th{
-background:#2563eb;
-color:white;
-padding:12px;
+/* DAY LABEL */
+.bar p {
+  margin-top: 8px;
+  font-size: 12px;
+  color: #64748b;
 }
 
-td{
-padding:12px;
-text-align:center;
-border-bottom:1px solid #eee;
+/* ===================== TABLE ===================== */
+table {
+  width: 100%;
+  border-collapse: collapse;
 }
 
-.achievement-card{
-background:white;
-padding:25px;
-border-radius:15px;
-box-shadow:0 5px 15px rgba(0,0,0,.08);
+th, td {
+  padding: 10px;
+  border-bottom: 1px solid #e2e8f0;
+  text-align: left;
 }
 
-.badges{
-display:flex;
-gap:15px;
-flex-wrap:wrap;
-margin-top:20px;
+th {
+  background: #2563eb;
+  color: white;
 }
 
-.badge{
-background:#2563eb;
-color:white;
-padding:12px 20px;
-border-radius:30px;
-font-weight:bold;
+/* ===================== ACHIEVEMENTS ===================== */
+.achievement-card {
+  background: white;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 3px 10px rgba(0,0,0,0.08);
 }
 
-@media(max-width:900px){
-
-.stats-grid{
-grid-template-columns:repeat(2,1fr);
+.badges {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
 }
 
-.chart-section{
-grid-template-columns:1fr;
-}
-
-}
-
-@media(max-width:600px){
-
-.stats-grid{
-grid-template-columns:1fr;
-}
-
+.badge {
+  background: #dcfce7;
+  padding: 8px 12px;
+  border-radius: 20px;
+  font-size: 13px;
 }

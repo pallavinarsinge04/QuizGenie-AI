@@ -1,42 +1,76 @@
+import Sidebar from "../components/Sidebar";
 import "./Profile.css";
+import { useState } from "react";
 
 function Profile() {
+  const [image, setImage] = useState(null);
+
   const user = {
     name: "John Doe",
     email: "john@example.com",
     role: "Student",
-    skills: "React, Node.js, MongoDB",
-    experience: "Fresher",
+    skills: ["React", "Node.js", "MongoDB", "JavaScript"],
     location: "India",
   };
 
-  return (
-    <div className="profile-container">
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    if (file) setImage(URL.createObjectURL(file));
+  };
 
-      <div className="profile-card">
+  return (
+    <div className="profile-layout">
+
+      <Sidebar />
+
+      <div className="profile-content">
 
         {/* HEADER */}
         <div className="profile-header">
-          <div className="avatar">
-            {user.name.charAt(0)}
+
+          <div className="avatar-box">
+            <img
+              src={
+                image ||
+                "https://cdn-icons-png.flaticon.com/512/3135/3135715.png"
+              }
+              alt="profile"
+            />
+
+            <label className="edit-icon">
+              ✏️
+              <input type="file" hidden onChange={handleImageChange} />
+            </label>
           </div>
 
           <div>
-            <h2>{user.name}</h2>
+            <h1>{user.name}</h1>
             <p>{user.role}</p>
           </div>
+
         </div>
 
-        {/* INFO */}
-        <div className="profile-info">
-          <p><b>Email:</b> {user.email}</p>
-          <p><b>Skills:</b> {user.skills}</p>
-          <p><b>Experience:</b> {user.experience}</p>
-          <p><b>Location:</b> {user.location}</p>
-        </div>
+        {/* PERSONAL INFO */}
+        <section className="section">
+          <h2>Personal Info</h2>
+          <p>Email: {user.email}</p>
+          <p>Location: {user.location}</p>
+        </section>
+
+        {/* SKILLS */}
+        <section className="section">
+          <h2>Skills</h2>
+          <div className="skills">
+            {user.skills.map((skill, i) => (
+              <span key={i} className="skill-tag">
+                {skill}
+              </span>
+            ))}
+          </div>
+        </section>
 
         {/* STATS */}
-        <div className="profile-stats">
+        <section className="section stats">
           <div>
             <h3>12</h3>
             <p>Quizzes</p>
@@ -51,9 +85,29 @@ function Profile() {
             <h3>85%</h3>
             <p>Avg Score</p>
           </div>
-        </div>
+        </section>
 
-        {/* BUTTON */}
+        {/* ACTIVITY */}
+        <section className="section">
+          <h2>Recent Activity</h2>
+          <ul className="activity">
+            <li>✔ Completed React Quiz</li>
+            <li>✔ Earned Certificate in JS</li>
+            <li>✔ Joined AI Quiz Challenge</li>
+          </ul>
+        </section>
+
+        {/* ACHIEVEMENTS */}
+        <section className="section">
+          <h2>Achievements</h2>
+          <div className="badges">
+            <span>🏆 Top Scorer</span>
+            <span>🚀 Fast Learner</span>
+            <span>🔥 7 Day Streak</span>
+          </div>
+        </section>
+
+        {/* ACTION */}
         <button className="edit-btn">
           Edit Profile
         </button>

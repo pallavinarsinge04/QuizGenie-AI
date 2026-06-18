@@ -68,9 +68,9 @@ function AIQuiz() {
         <Navbar />
 
         {/* ================= HEADER ================= */}
-        <div className="quiz-header">
+        <div>
           <h1>🤖 AI Quiz Generator</h1>
-          <p>Generate, Solve & Improve Your Skills</p>
+          
         </div>
 
         {/* ================= INPUT SECTION ================= */}
