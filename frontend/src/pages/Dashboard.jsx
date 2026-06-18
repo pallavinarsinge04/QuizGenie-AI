@@ -6,18 +6,25 @@ import "./Dashboard.css";
 function Dashboard() {
   const user = JSON.parse(localStorage.getItem("user"));
 
-  const jobs = [
-    { title: "Frontend Developer", company: "Google" },
-    { title: "Backend Developer", company: "Microsoft" },
-    { title: "Full Stack Developer", company: "Amazon" },
+  const [topic, setTopic] = useState("");
+  const [difficulty, setDifficulty] = useState("Easy");
+
+  const stats = {
+    total: 12,
+    attempted: 8,
+    avgScore: 76,
+    bestScore: 92,
+  };
+
+  const recentQuizzes = [
+    { topic: "React Basics", score: 85 },
+    { topic: "JavaScript ES6", score: 78 },
+    { topic: "Node.js", score: 90 },
   ];
 
-  const appliedJobs = [
-    { title: "React Developer", status: "Applied" },
-    { title: "Node Developer", status: "Interview" },
-  ];
-
-  const companies = ["Google", "Microsoft", "Amazon", "Meta"];
+  const generateQuiz = () => {
+    alert(`Generating quiz for ${topic} (${difficulty})`);
+  };
 
   return (
     <div className="layout">
@@ -26,61 +33,73 @@ function Dashboard() {
       <div className="main-content">
         <Navbar />
 
-        {/* ===== HERO SECTION ===== */}
+        {/* ===== HEADER ===== */}
         <div className="dashboard-hero">
-          <h1>Welcome, {user?.name || "User"} 👋</h1>
-          <p>Find your dream job and grow your career</p>
+          <h1>Welcome {user?.name || "User"} 👋</h1>
+          <p>Practice, Learn and Improve with AI Quizzes</p>
         </div>
 
-        {/* ===== STATS SECTION ===== */}
+        {/* ===== AI QUIZ GENERATOR ===== */}
+        <h2 className="section-title">AI Quiz Generator</h2>
+
+        <div className="quiz-box">
+          <input
+            type="text"
+            placeholder="Enter topic (React, Java, Python...)"
+            value={topic}
+            onChange={(e) => setTopic(e.target.value)}
+          />
+
+          <select
+            value={difficulty}
+            onChange={(e) => setDifficulty(e.target.value)}
+          >
+            <option>Easy</option>
+            <option>Medium</option>
+            <option>Hard</option>
+          </select>
+
+          <button onClick={generateQuiz}>
+            Generate Quiz
+          </button>
+        </div>
+
+        {/* ===== STATS ===== */}
+        <h2 className="section-title">Your Quiz Stats</h2>
+
         <div className="stats-grid">
-          <div className="stat-card">Total Jobs: 120</div>
-          <div className="stat-card">Applied Jobs: 5</div>
-          <div className="stat-card">Saved Jobs: 8</div>
-          <div className="stat-card">Profile: 80%</div>
+          <div className="stat-card">Total Quizzes: {stats.total}</div>
+          <div className="stat-card">Attempted: {stats.attempted}</div>
+          <div className="stat-card">Avg Score: {stats.avgScore}%</div>
+          <div className="stat-card">Best Score: {stats.bestScore}%</div>
         </div>
 
-        {/* ===== RECOMMENDED JOBS ===== */}
-        <h2 className="section-title">Recommended Jobs</h2>
+        {/* ===== RECENT QUIZZES ===== */}
+        <h2 className="section-title">Recent Quizzes</h2>
 
-        <div className="job-grid">
-          {jobs.map((job, i) => (
-            <div className="job-card" key={i}>
-              <h3>{job.title}</h3>
-              <p>{job.company}</p>
-              <button>Apply</button>
+        <div className="quiz-list">
+          {recentQuizzes.map((q, i) => (
+            <div className="quiz-card" key={i}>
+              <h3>{q.topic}</h3>
+              <p>Score: {q.score}%</p>
             </div>
           ))}
         </div>
 
-        {/* ===== ACTIVITY SECTION ===== */}
-        <h2 className="section-title">My Applications</h2>
-
-        <div className="activity-section">
-          {appliedJobs.map((job, i) => (
-            <div className="activity-card" key={i}>
-              <h4>{job.title}</h4>
-              <span>{job.status}</span>
-            </div>
-          ))}
-        </div>
-
-        {/* ===== TOP COMPANIES ===== */}
-        <h2 className="section-title">Top Companies</h2>
-
-        <div className="company-grid">
-          {companies.map((c, i) => (
-            <div className="company-card" key={i}>
-              <h3>{c}</h3>
-            </div>
-          ))}
-        </div>
-
-        {/* ===== PROGRESS TRACKER ===== */}
-        <h2 className="section-title">Profile Progress</h2>
+        {/* ===== PROGRESS ===== */}
+        <h2 className="section-title">Learning Progress</h2>
 
         <div className="progress-bar">
-          <div className="progress-fill" style={{ width: "80%" }}></div>
+          <div className="progress-fill" style={{ width: "70%" }}></div>
+        </div>
+
+        {/* ===== QUICK ACTIONS ===== */}
+        <h2 className="section-title">Quick Actions</h2>
+
+        <div className="action-grid">
+          <button>Start New Quiz</button>
+          <button>View Leaderboard</button>
+          <button>Review Mistakes</button>
         </div>
       </div>
     </div>
