@@ -1,114 +1,64 @@
-import { useState } from "react";
-import axios from "axios";
+import "./Profile.css";
 
 function Profile() {
-  // ✅ SAFE USER HANDLING
-  const storedUser = localStorage.getItem("user");
-  const user = storedUser ? JSON.parse(storedUser) : null;
-
-  // 🚨 If not logged in
-  if (!user) {
-    return (
-      <div style={{ padding: "20px" }}>
-        <h2>Please login to access Profile</h2>
-      </div>
-    );
-  }
-
-  const [name, setName] = useState(user.name || "");
-  const [skills, setSkills] = useState(user.skills || "");
-  const [profilePic, setProfilePic] = useState("");
-  const [resume, setResume] = useState(null);
-
-  // ================= UPDATE PROFILE =================
-  const updateProfile = async () => {
-    try {
-      const res = await axios.put(
-        "http://localhost:5000/api/user/update",
-        {
-          userId: user._id,
-          name,
-          skills,
-          profilePic,
-        }
-      );
-
-      alert("Profile Updated!");
-
-      localStorage.setItem(
-        "user",
-        JSON.stringify(res.data.user)
-      );
-    } catch (err) {
-      console.log(err);
-      alert("Profile update failed");
-    }
-  };
-
-  // ================= UPLOAD RESUME =================
-  const uploadResume = async () => {
-    if (!resume) {
-      alert("Please select a file");
-      return;
-    }
-
-    const formData = new FormData();
-    formData.append("resume", resume);
-    formData.append("userId", user._id);
-
-    try {
-      await axios.post(
-        "http://localhost:5000/api/user/upload-resume",
-        formData
-      );
-
-      alert("Resume Uploaded!");
-    } catch (err) {
-      console.log(err);
-      alert("Resume upload failed");
-    }
+  const user = {
+    name: "John Doe",
+    email: "john@example.com",
+    role: "Student",
+    skills: "React, Node.js, MongoDB",
+    experience: "Fresher",
+    location: "India",
   };
 
   return (
-    <div style={{ padding: "20px", maxWidth: "500px" }}>
-      <h1>Profile Page</h1>
+    <div className="profile-container">
 
-      {/* NAME */}
-      <input
-        value={name}
-        onChange={(e) => setName(e.target.value)}
-        placeholder="Name"
-      />
+      <div className="profile-card">
 
-      {/* SKILLS */}
-      <input
-        value={skills}
-        onChange={(e) => setSkills(e.target.value)}
-        placeholder="Skills (comma separated)"
-      />
+        {/* HEADER */}
+        <div className="profile-header">
+          <div className="avatar">
+            {user.name.charAt(0)}
+          </div>
 
-      {/* PROFILE PIC */}
-      <input
-        value={profilePic}
-        onChange={(e) => setProfilePic(e.target.value)}
-        placeholder="Profile Image URL"
-      />
+          <div>
+            <h2>{user.name}</h2>
+            <p>{user.role}</p>
+          </div>
+        </div>
 
-      <button onClick={updateProfile}>
-        Update Profile
-      </button>
+        {/* INFO */}
+        <div className="profile-info">
+          <p><b>Email:</b> {user.email}</p>
+          <p><b>Skills:</b> {user.skills}</p>
+          <p><b>Experience:</b> {user.experience}</p>
+          <p><b>Location:</b> {user.location}</p>
+        </div>
 
-      <hr />
+        {/* STATS */}
+        <div className="profile-stats">
+          <div>
+            <h3>12</h3>
+            <p>Quizzes</p>
+          </div>
 
-      {/* RESUME */}
-      <input
-        type="file"
-        onChange={(e) => setResume(e.target.files[0])}
-      />
+          <div>
+            <h3>8</h3>
+            <p>Certificates</p>
+          </div>
 
-      <button onClick={uploadResume}>
-        Upload Resume
-      </button>
+          <div>
+            <h3>85%</h3>
+            <p>Avg Score</p>
+          </div>
+        </div>
+
+        {/* BUTTON */}
+        <button className="edit-btn">
+          Edit Profile
+        </button>
+
+      </div>
     </div>
   );
 }
