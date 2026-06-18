@@ -83,51 +83,28 @@ function Analytics() {
               </div>
             </div>
 
-            <div className="chart-card">
+           <div className="chart-card">
+  <h2>Weekly Progress</h2>
 
-              <h2>Subject Performance</h2>
+  <div className="bars">
 
-              <table>
+    {[
+      { day: "Mon", value: 45 },
+      { day: "Tue", value: 70 },
+      { day: "Wed", value: 80 },
+      { day: "Thu", value: 55 },
+      { day: "Fri", value: 90 },
+      { day: "Sat", value: 75 },
+      { day: "Sun", value: 95 },
+    ].map((item, i) => (
+      <div className="bar" key={i}>
+        <span style={{ height: `${item.value}%` }}></span>
+        <p>{item.day}</p>
+      </div>
+    ))}
 
-                <thead>
-                  <tr>
-                    <th>Subject</th>
-                    <th>Score</th>
-                  </tr>
-                </thead>
-
-                <tbody>
-
-                  <tr>
-                    <td>React</td>
-                    <td>92%</td>
-                  </tr>
-
-                  <tr>
-                    <td>Java</td>
-                    <td>84%</td>
-                  </tr>
-
-                  <tr>
-                    <td>Python</td>
-                    <td>89%</td>
-                  </tr>
-
-                  <tr>
-                    <td>DSA</td>
-                    <td>78%</td>
-                  </tr>
-
-                  <tr>
-                    <td>SQL</td>
-                    <td>81%</td>
-                  </tr>
-
-                </tbody>
-
-              </table>
-
-            </div>
+  </div>
+</div>
 
           </div>
 

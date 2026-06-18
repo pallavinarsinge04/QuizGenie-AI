@@ -146,3 +146,77 @@ th {
   border-radius: 20px;
   font-size: 13px;
 }
+/* ===================== ANIMATED BARS ===================== */
+.bars {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  height: 180px;
+  padding: 10px;
+}
+
+/* BAR COLUMN */
+.bar {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 35px;
+}
+
+/* BAR ANIMATION CORE */
+.bar span {
+  display: block;
+  width: 12px;
+  background: linear-gradient(180deg, #2563eb, #1d4ed8);
+  border-radius: 8px;
+
+  /* 🔥 ANIMATION */
+  animation: growBar 1s ease-in-out;
+  transition: all 0.3s ease;
+}
+
+/* HOVER EFFECT */
+.bar span:hover {
+  transform: scale(1.1);
+  filter: brightness(1.2);
+}
+
+/* DAY LABEL */
+.bar p {
+  margin-top: 8px;
+  font-size: 12px;
+  color: #64748b;
+}
+
+/* 🔥 KEYFRAME ANIMATION */
+@keyframes growBar {
+  from {
+    height: 0%;
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+.analytics-container {
+  animation: fadeIn 0.6s ease-in-out;
+}
+
+.stat-card {
+  transition: all 0.3s ease;
+}
+
+.stat-card:hover {
+  transform: translateY(-5px);
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
