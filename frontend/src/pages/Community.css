@@ -38,8 +38,10 @@ background:#2563eb;
 color:white;
 border:none;
 padding:14px 25px;
-border-radius:10px;
+border-radius:5px;
 cursor:pointer;
+width:100px;
+height:50px;
 }
 
 .create-btn:hover{

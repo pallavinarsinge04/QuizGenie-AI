@@ -28,7 +28,7 @@ function Leaderboard() {
         {/* ===== HEADER SECTION ===== */}
         <div className="leaderboard-header">
           <h1>🏆 Leaderboard</h1>
-          <p>Top performers based on quiz scores</p>
+          
         </div>
 
         {/* ===== STATS SECTION ===== */}

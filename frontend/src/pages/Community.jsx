@@ -23,7 +23,7 @@ function Community() {
             />
 
             <button className="create-btn">
-              + Create Post
+              Create Post
             </button>
 
           </div>

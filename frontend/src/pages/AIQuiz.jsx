@@ -41,8 +41,8 @@ function AIQuiz() {
         <Navbar />
 
         {/* ===== AI QUIZ HEADER SECTION ===== */}
-        <div className="quiz-header">
-          <h1>🤖 AI Quiz Generator</h1>
+        <div>
+          <h1>AI Quiz Generator</h1>
           <p>Create smart quizzes using AI instantly</p>
         </div>
 

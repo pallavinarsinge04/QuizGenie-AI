@@ -39,12 +39,12 @@ function Profile() {
 
             <div className="info-row">
               <span>Email</span>
-              <span>pallavi@gmail.com</span>
+              <span>pallavinarsinge123@gmail.com</span>
             </div>
 
             <div className="info-row">
               <span>College</span>
-              <span>XYZ Engineering College</span>
+              <span>Government College of Engineering , Jalgaon</span>
             </div>
 
             <div className="info-row">
@@ -54,7 +54,7 @@ function Profile() {
 
             <div className="info-row">
               <span>Skills</span>
-              <span>React, Node, MongoDB</span>
+              <span>Python ,React, Node, MongoDB</span>
             </div>
 
           </div>

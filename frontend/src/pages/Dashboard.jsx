@@ -34,36 +34,12 @@ function Dashboard() {
         <Navbar />
 
         {/* ===== HEADER ===== */}
-        <div className="dashboard-hero">
+        <div>
           <h1>Welcome {user?.name || "User"} 👋</h1>
-          <p>Practice, Learn and Improve with AI Quizzes</p>
+        
         </div>
 
-        {/* ===== AI QUIZ GENERATOR ===== */}
-        <h2 className="section-title">AI Quiz Generator</h2>
-
-        <div className="quiz-box">
-          <input
-            type="text"
-            placeholder="Enter topic (React, Java, Python...)"
-            value={topic}
-            onChange={(e) => setTopic(e.target.value)}
-          />
-
-          <select
-            value={difficulty}
-            onChange={(e) => setDifficulty(e.target.value)}
-          >
-            <option>Easy</option>
-            <option>Medium</option>
-            <option>Hard</option>
-          </select>
-
-          <button onClick={generateQuiz}>
-            Generate Quiz
-          </button>
-        </div>
-
+       
         {/* ===== STATS ===== */}
         <h2 className="section-title">Your Quiz Stats</h2>
 
@@ -96,11 +72,7 @@ function Dashboard() {
         {/* ===== QUICK ACTIONS ===== */}
         <h2 className="section-title">Quick Actions</h2>
 
-        <div className="action-grid">
-          <button>Start New Quiz</button>
-          <button>View Leaderboard</button>
-          <button>Review Mistakes</button>
-        </div>
+       
       </div>
     </div>
   );

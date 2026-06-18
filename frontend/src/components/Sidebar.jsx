@@ -17,13 +17,9 @@ function Sidebar() {
 
       <Link to="/analytics">📊 Analytics</Link>
 
-      <Link to="/certificate">🏆 Certificate</Link>
-
       <Link to="/community">👥 Community</Link>
 
       <Link to="/chat">💬 AI Chat</Link>
-
-      <Link to="/videos">🎥 Videos</Link>
 
       <Link to="/leaderboard">🥇 Leaderboard</Link>
 
