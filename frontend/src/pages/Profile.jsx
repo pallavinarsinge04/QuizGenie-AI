@@ -1,122 +1,114 @@
-import Sidebar from "../components/Sidebar";
-import Navbar from "../components/Navbar";
-import "./Profile.css";
+import { useState } from "react";
+import axios from "axios";
 
 function Profile() {
-  return (
-    <div className="profile-layout">
-      <Sidebar />
+  // ✅ SAFE USER HANDLING
+  const storedUser = localStorage.getItem("user");
+  const user = storedUser ? JSON.parse(storedUser) : null;
 
-      <div className="profile-main">
-        <Navbar />
-
-        <div className="profile-container">
-
-          <div className="profile-card">
-
-            <img
-              src="https://i.pravatar.cc/200"
-              alt="profile"
-              className="profile-image"
-            />
-
-            <h2>Pallavi Narsinge</h2>
-
-            <p>Full Stack Developer</p>
-
-            <button>Edit Profile</button>
-
-          </div>
-
-          <div className="info-card">
-
-            <h2>Personal Information</h2>
-
-            <div className="info-row">
-              <span>Name</span>
-              <span>Pallavi Narsinge</span>
-            </div>
-
-            <div className="info-row">
-              <span>Email</span>
-              <span>pallavinarsinge123@gmail.com</span>
-            </div>
-
-            <div className="info-row">
-              <span>College</span>
-              <span>Government College of Engineering , Jalgaon</span>
-            </div>
-
-            <div className="info-row">
-              <span>Branch</span>
-              <span>Computer Science</span>
-            </div>
-
-            <div className="info-row">
-              <span>Skills</span>
-              <span>Python ,React, Node, MongoDB</span>
-            </div>
-
-          </div>
-
-          <div className="stats-grid">
-
-            <div className="stat-card">
-              <h2>25</h2>
-              <p>Quizzes Completed</p>
-            </div>
-
-            <div className="stat-card">
-              <h2>150</h2>
-              <p>Flashcards</p>
-            </div>
-
-            <div className="stat-card">
-              <h2>15</h2>
-              <p>Study Streak</p>
-            </div>
-
-            <div className="stat-card">
-              <h2>88%</h2>
-              <p>Average Score</p>
-            </div>
-
-          </div>
-
-          <div className="progress-card">
-
-            <h2>Learning Progress</h2>
-
-            <div className="progress-bar">
-              <div className="progress-fill"></div>
-            </div>
-
-            <p>80% Completed</p>
-
-          </div>
-
-          <div className="resume-card">
-
-            <h2>Resume</h2>
-
-            <input type="file" />
-
-            <button className="upload-btn">
-              Upload Resume
-            </button>
-
-          </div>
-
-          <div className="action-buttons">
-
-            <button className="logout-btn">
-              Logout
-            </button>
-
-          </div>
-
-        </div>
+  // 🚨 If not logged in
+  if (!user) {
+    return (
+      <div style={{ padding: "20px" }}>
+        <h2>Please login to access Profile</h2>
       </div>
+    );
+  }
+
+  const [name, setName] = useState(user.name || "");
+  const [skills, setSkills] = useState(user.skills || "");
+  const [profilePic, setProfilePic] = useState("");
+  const [resume, setResume] = useState(null);
+
+  // ================= UPDATE PROFILE =================
+  const updateProfile = async () => {
+    try {
+      const res = await axios.put(
+        "http://localhost:5000/api/user/update",
+        {
+          userId: user._id,
+          name,
+          skills,
+          profilePic,
+        }
+      );
+
+      alert("Profile Updated!");
+
+      localStorage.setItem(
+        "user",
+        JSON.stringify(res.data.user)
+      );
+    } catch (err) {
+      console.log(err);
+      alert("Profile update failed");
+    }
+  };
+
+  // ================= UPLOAD RESUME =================
+  const uploadResume = async () => {
+    if (!resume) {
+      alert("Please select a file");
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append("resume", resume);
+    formData.append("userId", user._id);
+
+    try {
+      await axios.post(
+        "http://localhost:5000/api/user/upload-resume",
+        formData
+      );
+
+      alert("Resume Uploaded!");
+    } catch (err) {
+      console.log(err);
+      alert("Resume upload failed");
+    }
+  };
+
+  return (
+    <div style={{ padding: "20px", maxWidth: "500px" }}>
+      <h1>Profile Page</h1>
+
+      {/* NAME */}
+      <input
+        value={name}
+        onChange={(e) => setName(e.target.value)}
+        placeholder="Name"
+      />
+
+      {/* SKILLS */}
+      <input
+        value={skills}
+        onChange={(e) => setSkills(e.target.value)}
+        placeholder="Skills (comma separated)"
+      />
+
+      {/* PROFILE PIC */}
+      <input
+        value={profilePic}
+        onChange={(e) => setProfilePic(e.target.value)}
+        placeholder="Profile Image URL"
+      />
+
+      <button onClick={updateProfile}>
+        Update Profile
+      </button>
+
+      <hr />
+
+      {/* RESUME */}
+      <input
+        type="file"
+        onChange={(e) => setResume(e.target.files[0])}
+      />
+
+      <button onClick={uploadResume}>
+        Upload Resume
+      </button>
     </div>
   );
 }

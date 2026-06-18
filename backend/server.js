@@ -8,7 +8,10 @@ const connectDB = require("./config/db");
 const app = express();
 
 connectDB();
+app.use("/uploads", express.static("uploads"));
 
+app.use(express.json());
+app.use("/api/user", require("./routes/userRoutes"));
 app.use(cors());
 app.use(express.json());
 
