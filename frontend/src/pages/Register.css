@@ -1,4 +1,4 @@
-.auth-page{
+.register-container{
 
 height:100vh;
 
@@ -8,11 +8,11 @@ justify-content:center;
 
 align-items:center;
 
-background:linear-gradient(135deg,#2563EB,#3B82F6);
+background:linear-gradient(135deg,#2563eb,#7c3aed);
 
 }
 
-.auth-card{
+.register-card{
 
 width:400px;
 
@@ -22,6 +22,98 @@ padding:40px;
 
 border-radius:20px;
 
-box-shadow:0 10px 30px rgba(0,0,0,.2);
+box-shadow:0 15px 35px rgba(0,0,0,.2);
+
+display:flex;
+
+flex-direction:column;
+
+gap:20px;
+
+}
+
+.register-card h1{
+
+margin:0;
+
+color:#2563eb;
+
+text-align:center;
+
+}
+
+.register-card p{
+
+text-align:center;
+
+color:gray;
+
+}
+
+.register-card input{
+
+padding:14px;
+
+border:1px solid #ddd;
+
+border-radius:10px;
+
+font-size:16px;
+
+outline:none;
+
+}
+
+.register-card input:focus{
+
+border-color:#2563eb;
+
+}
+
+.register-card button{
+
+padding:15px;
+
+background:#2563eb;
+
+color:white;
+
+border:none;
+
+border-radius:10px;
+
+cursor:pointer;
+
+font-size:18px;
+
+font-weight:bold;
+
+transition:.3s;
+
+}
+
+.register-card button:hover{
+
+background:#1d4ed8;
+
+transform:translateY(-2px);
+
+}
+
+.register-card span{
+
+text-align:center;
+
+}
+
+.register-card a{
+
+text-decoration:none;
+
+color:#2563eb;
+
+margin-left:5px;
+
+font-weight:bold;
 
 }

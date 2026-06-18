@@ -1,56 +1,16 @@
-import { useState } from "react";
-import API from "../api/axios";
+import React, { useState } from "react";
 
-export default function Register() {
-  const [form, setForm] = useState({
-    name: "",
-    email: "",
-    password: "",
-  });
-
-  const register = async () => {
-    try {
-      await API.post("/auth/register", form);
-      alert("Registration Successful");
-      window.location.href = "/";
-    } catch (err) {
-      alert("Registration Failed");
-    }
-  };
+function Register() {
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [role, setRole] = useState("student");
 
   return (
-    <div style={{ padding: 30 }}>
-      <h1>Register</h1>
-
-      <input
-        placeholder="Name"
-        onChange={(e) =>
-          setForm({ ...form, name: e.target.value })
-        }
-      />
-
-      <br /><br />
-
-      <input
-        placeholder="Email"
-        onChange={(e) =>
-          setForm({ ...form, email: e.target.value })
-        }
-      />
-
-      <br /><br />
-
-      <input
-        type="password"
-        placeholder="Password"
-        onChange={(e) =>
-          setForm({ ...form, password: e.target.value })
-        }
-      />
-
-      <br /><br />
-
-      <button onClick={register}>Register</button>
+    <div>
+      <h1>Register Page</h1>
     </div>
   );
 }
+
+export default Register;

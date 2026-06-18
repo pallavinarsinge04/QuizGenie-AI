@@ -2,9 +2,11 @@ const User = require("../models/User");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 
+// ================= Register =================
+
 exports.register = async (req, res) => {
   try {
-    const { name, email, password } = req.body;
+    const { name, email, password, role } = req.body;
 
     const exist = await User.findOne({ email });
 
@@ -20,6 +22,7 @@ exports.register = async (req, res) => {
       name,
       email,
       password: hashedPassword,
+      role,
     });
 
     res.status(201).json({
@@ -33,6 +36,8 @@ exports.register = async (req, res) => {
   }
 };
 
+// ================= Login =================
+
 exports.login = async (req, res) => {
   try {
     const { email, password } = req.body;
@@ -45,7 +50,10 @@ exports.login = async (req, res) => {
       });
     }
 
-    const match = await bcrypt.compare(password, user.password);
+    const match = await bcrypt.compare(
+      password,
+      user.password
+    );
 
     if (!match) {
       return res.status(400).json({

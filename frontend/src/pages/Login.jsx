@@ -1,6 +1,8 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import API from "../api/axios";
+import "./Login.css";
+
 export default function Login() {
   const navigate = useNavigate();
 
@@ -18,34 +20,54 @@ export default function Login() {
 
       navigate("/dashboard");
     } catch (err) {
-      alert("Login Failed");
+  console.log(err);
+  console.log(err.response?.data);
+
+  alert(
+    err.response?.data?.message ||
+    err.response?.data?.error ||
+    "Login Failed"
+  );
     }
   };
 
   return (
-    <div style={{ padding: 30 }}>
-      <h1>Login</h1>
+    <div className="login-page">
 
-      <input
-        placeholder="Email"
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-      />
+      <div className="login-card">
 
-      <br />
-      <br />
+        <h1>QuizGenie AI</h1>
 
-      <input
-        type="password"
-        placeholder="Password"
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
-      />
+        <p>Welcome Back 👋</p>
 
-      <br />
-      <br />
+        <input
+          type="email"
+          placeholder="Enter Email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+        />
 
-      <button onClick={loginUser}>Login</button>
+        <input
+          type="password"
+          placeholder="Enter Password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+        />
+
+        <button onClick={loginUser}>
+          Login
+        </button>
+
+        <div className="login-footer">
+          Don't have an account?
+
+          <Link to="/register">
+            Register
+          </Link>
+        </div>
+
+      </div>
+
     </div>
   );
 }
