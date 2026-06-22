@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import API from "../api/axios";
 import Sidebar from "../components/Sidebar";
 import Navbar from "../components/Navbar";
@@ -20,20 +20,14 @@ function AIQuiz() {
 
   const [correctMap, setCorrectMap] = useState({});
 
-  // ================= PAUSE STATE =================
-  const [isPaused, setIsPaused] = useState(false);
-
-  const timerRef = useRef(null);
-
   // ================= TIMER =================
   useEffect(() => {
     if (questions.length === 0 || submitted) return;
-    if (isPaused) return;
 
-    timerRef.current = setInterval(() => {
+    const interval = setInterval(() => {
       setTimeLeft((prev) => {
         if (prev <= 1) {
-          clearInterval(timerRef.current);
+          clearInterval(interval);
           submitQuiz(true);
           return 0;
         }
@@ -41,10 +35,10 @@ function AIQuiz() {
       });
     }, 1000);
 
-    return () => clearInterval(timerRef.current);
-  }, [questions, submitted, isPaused]);
+    return () => clearInterval(interval);
+  }, [questions, submitted]);
 
-  // ================= GENERATE QUIZ =================
+  // ================= GENERATE MEANINGFUL QUIZ =================
   const generateQuiz = async () => {
     try {
       if (!topic) {
@@ -57,14 +51,20 @@ function AIQuiz() {
       setSelectedAnswers({});
       setSubmitted(false);
       setCorrectMap({});
-      setIsPaused(false);
 
       const res = await API.post("/ai/generate", {
         topic,
         difficulty,
       });
 
-      const data = res.data.questions || [];
+      let data = res.data.questions || [];
+
+      // fallback: ensure structure is meaningful
+      data = data.map((q, index) => ({
+        question: q.question || `${topic} concept question ${index + 1}`,
+        options: q.options || [],
+        answer: q.answer || "",
+      }));
 
       setQuestions(data);
 
@@ -74,6 +74,7 @@ function AIQuiz() {
       });
       setCorrectMap(map);
 
+      // ================= MARKS + TIMER =================
       if (difficulty === "Easy") {
         setQuizMarks(20);
         setTimeLeft(600);
@@ -91,11 +92,6 @@ function AIQuiz() {
     } finally {
       setLoading(false);
     }
-  };
-
-  // ================= PAUSE / RESUME =================
-  const togglePause = () => {
-    setIsPaused((prev) => !prev);
   };
 
   // ================= SELECT ANSWER =================
@@ -144,7 +140,7 @@ function AIQuiz() {
         {/* INPUT */}
         <div className="quiz-box">
           <input
-            placeholder="Enter Topic"
+            placeholder="Enter Topic (React, Java, Python...)"
             value={topic}
             onChange={(e) => setTopic(e.target.value)}
           />
@@ -163,29 +159,11 @@ function AIQuiz() {
           </button>
         </div>
 
-        {/* TIMER + PAUSE */}
+        {/* TIMER */}
         {questions.length > 0 && !submitted && (
           <div className="timer-card">
             ⏰ {Math.floor(timeLeft / 60)}:
             {(timeLeft % 60).toString().padStart(2, "0")}
-
-            <button
-              onClick={togglePause}
-              style={{
-                marginLeft: "20px",
-                padding: "5px 10px",
-                cursor: "pointer",
-              }}
-            >
-              {isPaused ? "Resume ▶" : "Pause ⏸"}
-            </button>
-          </div>
-        )}
-
-        {/* STATUS */}
-        {isPaused && (
-          <div className="pause-banner">
-            ⏸ Quiz Paused
           </div>
         )}
 
@@ -203,7 +181,7 @@ function AIQuiz() {
         <div className="question-list">
           {questions.map((q, i) => (
             <div className="question-card" key={i}>
-              <h3>{q.question}</h3>
+              <h3>{i + 1}. {q.question}</h3>
 
               {q.options?.map((opt, j) => {
                 const isSelected = selectedAnswers[i] === opt;
