@@ -149,3 +149,11 @@
   font-size: 14px;
   color: #1e293b;
 }
+.pause-banner {
+  background: #ffcc00;
+  padding: 10px;
+  text-align: center;
+  font-weight: bold;
+  margin: 10px 0;
+  border-radius: 8px;
+}

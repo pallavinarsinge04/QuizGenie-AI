@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import API from "../api/axios";
 import Sidebar from "../components/Sidebar";
 import Navbar from "../components/Navbar";
@@ -20,14 +20,20 @@ function AIQuiz() {
 
   const [correctMap, setCorrectMap] = useState({});
 
-  // ================= FIXED TIMER =================
+  // ================= PAUSE STATE =================
+  const [isPaused, setIsPaused] = useState(false);
+
+  const timerRef = useRef(null);
+
+  // ================= TIMER =================
   useEffect(() => {
     if (questions.length === 0 || submitted) return;
+    if (isPaused) return;
 
-    const interval = setInterval(() => {
+    timerRef.current = setInterval(() => {
       setTimeLeft((prev) => {
         if (prev <= 1) {
-          clearInterval(interval);
+          clearInterval(timerRef.current);
           submitQuiz(true);
           return 0;
         }
@@ -35,8 +41,8 @@ function AIQuiz() {
       });
     }, 1000);
 
-    return () => clearInterval(interval);
-  }, [questions, submitted]);
+    return () => clearInterval(timerRef.current);
+  }, [questions, submitted, isPaused]);
 
   // ================= GENERATE QUIZ =================
   const generateQuiz = async () => {
@@ -51,6 +57,7 @@ function AIQuiz() {
       setSelectedAnswers({});
       setSubmitted(false);
       setCorrectMap({});
+      setIsPaused(false);
 
       const res = await API.post("/ai/generate", {
         topic,
@@ -67,16 +74,15 @@ function AIQuiz() {
       });
       setCorrectMap(map);
 
-      // ================= SET TIMER =================
       if (difficulty === "Easy") {
         setQuizMarks(20);
-        setTimeLeft(600); // 10 min
+        setTimeLeft(600);
       } else if (difficulty === "Medium") {
         setQuizMarks(50);
-        setTimeLeft(1800); // 30 min
+        setTimeLeft(1800);
       } else {
         setQuizMarks(100);
-        setTimeLeft(3000); // 50 min
+        setTimeLeft(3000);
       }
 
     } catch (err) {
@@ -85,6 +91,11 @@ function AIQuiz() {
     } finally {
       setLoading(false);
     }
+  };
+
+  // ================= PAUSE / RESUME =================
+  const togglePause = () => {
+    setIsPaused((prev) => !prev);
   };
 
   // ================= SELECT ANSWER =================
@@ -152,11 +163,29 @@ function AIQuiz() {
           </button>
         </div>
 
-        {/* TIMER */}
+        {/* TIMER + PAUSE */}
         {questions.length > 0 && !submitted && (
           <div className="timer-card">
             ⏰ {Math.floor(timeLeft / 60)}:
             {(timeLeft % 60).toString().padStart(2, "0")}
+
+            <button
+              onClick={togglePause}
+              style={{
+                marginLeft: "20px",
+                padding: "5px 10px",
+                cursor: "pointer",
+              }}
+            >
+              {isPaused ? "Resume ▶" : "Pause ⏸"}
+            </button>
+          </div>
+        )}
+
+        {/* STATUS */}
+        {isPaused && (
+          <div className="pause-banner">
+            ⏸ Quiz Paused
           </div>
         )}
 
