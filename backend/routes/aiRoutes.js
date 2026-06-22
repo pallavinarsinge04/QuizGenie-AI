@@ -1,8 +1,8 @@
 const express = require("express");
 const router = express.Router();
 
-const { generateAIQuiz } = require("../controllers/aiController");
+const { generateQuiz } = require("../controllers/aiController");
 
-router.post("/generate", generateAIQuiz);
+router.post("/generate", generateQuiz);
 
 module.exports = router;

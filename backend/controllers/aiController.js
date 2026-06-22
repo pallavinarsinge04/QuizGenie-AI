@@ -1,29 +1,34 @@
-const { generateQuiz } = require("../services/aiService");
-
-exports.generateAIQuiz = async (req, res) => {
+exports.generateQuiz = async (req, res) => {
   try {
-    console.log("BODY:", req.body);
-
     const { topic, difficulty } = req.body;
 
     if (!topic) {
       return res.status(400).json({
-        message: "Topic is required",
+        message: "Topic required",
       });
     }
 
-    const quiz = await generateQuiz(topic, difficulty);
+    // MOCK DATA (for testing first)
+    const questions = [
+      {
+        question: `What is ${topic}?`,
+        options: ["Option A", "Option B", "Option C", "Option D"],
+        answer: "Option A",
+      },
+      {
+        question: `Why use ${topic}?`,
+        options: ["Speed", "UI", "Backend", "Database"],
+        answer: "UI",
+      },
+    ];
 
     return res.json({
-      success: true,
-      questions: quiz.questions,
+      questions,
     });
-
-  } catch (error) {
-    console.log("AI ERROR:", error);
-
+  } catch (err) {
+    console.log(err);
     return res.status(500).json({
-      message: error.message,
+      message: "Quiz generation failed",
     });
   }
 };

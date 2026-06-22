@@ -7,15 +7,18 @@ import "./AIQuiz.css";
 function AIQuiz() {
   const [topic, setTopic] = useState("");
   const [difficulty, setDifficulty] = useState("Easy");
-  const [questions, setQuestions] = useState([]);
 
+  const [questions, setQuestions] = useState([]);
   const [selectedAnswers, setSelectedAnswers] = useState({});
   const [score, setScore] = useState(null);
 
   const [loading, setLoading] = useState(false);
   const [timeLeft, setTimeLeft] = useState(0);
+
   const [quizMarks, setQuizMarks] = useState(20);
   const [submitted, setSubmitted] = useState(false);
+
+  const [correctMap, setCorrectMap] = useState({});
 
   // ================= TIMER =================
   useEffect(() => {
@@ -25,7 +28,7 @@ function AIQuiz() {
       setTimeLeft((prev) => {
         if (prev <= 1) {
           clearInterval(timer);
-          autoSubmitQuiz();
+          submitQuiz(true);
           return 0;
         }
         return prev - 1;
@@ -35,11 +38,11 @@ function AIQuiz() {
     return () => clearInterval(timer);
   }, [timeLeft, submitted, questions]);
 
-  // ================= GENERATE QUIZ =================
+  // ================= QUIZ GENERATION =================
   const generateQuiz = async () => {
     try {
       if (!topic) {
-        alert("Please enter topic");
+        alert("Enter topic");
         return;
       }
 
@@ -47,46 +50,56 @@ function AIQuiz() {
       setScore(null);
       setSelectedAnswers({});
       setSubmitted(false);
+      setCorrectMap({});
 
       const res = await API.post("/ai/generate", {
         topic,
         difficulty,
       });
 
-      setQuestions(res.data.questions || []);
+      let data = res.data.questions || [];
 
-      // difficulty settings
+      // ================= FIX QUESTION LIMITS =================
       if (difficulty === "Easy") {
+        data = data.slice(0, 10);
         setQuizMarks(20);
         setTimeLeft(600);
-      } else if (difficulty === "Medium") {
+      } 
+      else if (difficulty === "Medium") {
+        data = data.slice(0, 30);
         setQuizMarks(50);
         setTimeLeft(1200);
-      } else {
+      } 
+      else {
+        data = data.slice(0, 50);
         setQuizMarks(100);
         setTimeLeft(1800);
       }
-    } catch (error) {
-      console.log(error);
-      alert("Failed to generate quiz");
+
+      setQuestions(data);
+
+      const map = {};
+      data.forEach((q, i) => {
+        map[i] = q.answer;
+      });
+      setCorrectMap(map);
+
+    } catch (err) {
+      console.log(err);
+      alert("Quiz generation failed");
     } finally {
       setLoading(false);
     }
   };
 
   // ================= SELECT ANSWER =================
-  const handleSelect = (index, option) => {
+  const handleSelect = (i, opt) => {
     if (submitted) return;
 
     setSelectedAnswers((prev) => ({
       ...prev,
-      [index]: option,
+      [i]: opt,
     }));
-  };
-
-  // ================= AUTO SUBMIT =================
-  const autoSubmitQuiz = () => {
-    submitQuiz(true);
   };
 
   // ================= SUBMIT QUIZ =================
@@ -106,7 +119,7 @@ function AIQuiz() {
     setSubmitted(true);
 
     if (auto) {
-      alert("Time up! Quiz auto submitted.");
+      alert("⏰ Auto Submitted!");
     }
   };
 
@@ -116,6 +129,7 @@ function AIQuiz() {
   return (
     <div className="layout">
       <Sidebar />
+
       <div className="main-content">
         <Navbar />
 
@@ -146,7 +160,7 @@ function AIQuiz() {
         {/* TIMER */}
         {questions.length > 0 && !submitted && (
           <div className="timer-card">
-            ⏰ Time Left: {Math.floor(timeLeft / 60)}:
+            ⏰ {Math.floor(timeLeft / 60)}:
             {(timeLeft % 60).toString().padStart(2, "0")}
           </div>
         )}
@@ -155,9 +169,8 @@ function AIQuiz() {
         {score !== null && (
           <div className="score-box">
             <h2>Score: {score.toFixed(0)} / {quizMarks}</h2>
-            <h3>Percentage: {percentage.toFixed(0)}%</h3>
             <h3>
-              Status: {percentage >= 40 ? "Pass" : "Fail"}
+              {percentage >= 40 ? "✅ Pass" : "❌ Fail"}
             </h3>
           </div>
         )}
@@ -168,17 +181,24 @@ function AIQuiz() {
             <div className="question-card" key={i}>
               <h3>{q.question}</h3>
 
-              {q.options?.map((opt, j) => (
-                <div
-                  key={j}
-                  className={`option ${
-                    selectedAnswers[i] === opt ? "selected" : ""
-                  }`}
-                  onClick={() => handleSelect(i, opt)}
-                >
-                  {opt}
-                </div>
-              ))}
+              {q.options?.map((opt, j) => {
+                const isSelected = selectedAnswers[i] === opt;
+                const isCorrect = correctMap[i] === opt;
+
+                return (
+                  <div
+                    key={j}
+                    className={`option
+                      ${isSelected ? "selected" : ""}
+                      ${submitted && isCorrect ? "correct" : ""}
+                      ${submitted && isSelected && !isCorrect ? "wrong" : ""}
+                    `}
+                    onClick={() => handleSelect(i, opt)}
+                  >
+                    {opt}
+                  </div>
+                );
+              })}
             </div>
           ))}
         </div>
