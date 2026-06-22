@@ -20,14 +20,14 @@ function AIQuiz() {
 
   const [correctMap, setCorrectMap] = useState({});
 
-  // ================= TIMER =================
+  // ================= FIXED TIMER =================
   useEffect(() => {
-    if (timeLeft <= 0 || submitted || questions.length === 0) return;
+    if (questions.length === 0 || submitted) return;
 
-    const timer = setInterval(() => {
+    const interval = setInterval(() => {
       setTimeLeft((prev) => {
         if (prev <= 1) {
-          clearInterval(timer);
+          clearInterval(interval);
           submitQuiz(true);
           return 0;
         }
@@ -35,49 +35,58 @@ function AIQuiz() {
       });
     }, 1000);
 
-    return () => clearInterval(timer);
-  }, [timeLeft, submitted, questions]);
+    return () => clearInterval(interval);
+  }, [questions, submitted]);
 
-  // ================= QUIZ GENERATION =================
+  // ================= GENERATE QUIZ =================
   const generateQuiz = async () => {
-  try {
-    if (!topic) {
-      alert("Enter topic");
-      return;
+    try {
+      if (!topic) {
+        alert("Enter topic");
+        return;
+      }
+
+      setLoading(true);
+      setScore(null);
+      setSelectedAnswers({});
+      setSubmitted(false);
+      setCorrectMap({});
+
+      const res = await API.post("/ai/generate", {
+        topic,
+        difficulty,
+      });
+
+      const data = res.data.questions || [];
+
+      setQuestions(data);
+
+      const map = {};
+      data.forEach((q, i) => {
+        map[i] = q.answer;
+      });
+      setCorrectMap(map);
+
+      // ================= SET TIMER =================
+      if (difficulty === "Easy") {
+        setQuizMarks(20);
+        setTimeLeft(600); // 10 min
+      } else if (difficulty === "Medium") {
+        setQuizMarks(50);
+        setTimeLeft(1800); // 30 min
+      } else {
+        setQuizMarks(100);
+        setTimeLeft(3000); // 50 min
+      }
+
+    } catch (err) {
+      console.log(err);
+      alert("Quiz generation failed");
+    } finally {
+      setLoading(false);
     }
+  };
 
-    setLoading(true);
-    setScore(null);
-    setSelectedAnswers({});
-    setSubmitted(false);
-
-    const res = await API.post("/ai/generate", {
-      topic,
-      difficulty,
-    });
-
-    const data = res.data.questions || [];
-
-    setQuestions(data);
-
-    const map = {};
-    data.forEach((q, i) => {
-      map[i] = q.answer;
-    });
-
-    setCorrectMap(map);
-
-    if (difficulty === "Easy") setQuizMarks(20);
-    else if (difficulty === "Medium") setQuizMarks(50);
-    else setQuizMarks(100);
-
-  } catch (err) {
-    console.log(err);
-    alert("Quiz generation failed");
-  } finally {
-    setLoading(false);
-  }
-};
   // ================= SELECT ANSWER =================
   const handleSelect = (i, opt) => {
     if (submitted) return;
@@ -105,7 +114,7 @@ function AIQuiz() {
     setSubmitted(true);
 
     if (auto) {
-      alert("⏰ Auto Submitted!");
+      alert("⏰ Time Over! Auto Submitted");
     }
   };
 
