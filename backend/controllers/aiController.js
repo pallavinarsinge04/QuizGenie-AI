@@ -1,3 +1,9 @@
+const OpenAI = require("openai");
+
+const openai = new OpenAI({
+  apiKey: process.env.OPENAI_API_KEY,
+});
+
 exports.generateQuiz = async (req, res) => {
   try {
     const { topic, difficulty } = req.body;
@@ -8,24 +14,49 @@ exports.generateQuiz = async (req, res) => {
     else if (difficulty === "Medium") count = 30;
     else if (difficulty === "Hard") count = 50;
 
-    // 🔥 IMPORTANT: generate correct number of questions
-    const questions = [];
+    const prompt = `
+Generate ${count} multiple-choice questions on "${topic}".
+Difficulty: ${difficulty}
 
-    for (let i = 1; i <= count; i++) {
-      questions.push({
-        question: `${topic} Question ${i}`,
-        options: ["A", "B", "C", "D"],
-        answer: "A",
-      });
+Return ONLY valid JSON in this format:
+
+{
+  "questions": [
+    {
+      "question": "...",
+      "options": ["A", "B", "C", "D"],
+      "answer": "correct option"
     }
+  ]
+}
+`;
 
-    return res.json({
-      questions,
+    const response = await openai.chat.completions.create({
+      model: "gpt-4o-mini",
+      messages: [
+        {
+          role: "system",
+          content: "You are an expert quiz generator. Return only JSON.",
+        },
+        {
+          role: "user",
+          content: prompt,
+        },
+      ],
+      temperature: 0.7,
     });
+
+    let content = response.choices[0].message.content;
+
+    // convert string → JSON
+    const data = JSON.parse(content);
+
+    return res.json(data);
   } catch (err) {
-    console.log(err);
+    console.log("AI ERROR:", err.message);
+
     return res.status(500).json({
-      message: "Quiz generation failed",
+      message: "AI quiz generation failed",
     });
   }
 };
