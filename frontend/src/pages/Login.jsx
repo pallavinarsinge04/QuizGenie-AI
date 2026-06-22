@@ -1,7 +1,8 @@
 import { useState } from "react";
 import axios from "axios";
 import "./Login.css";
-
+console.log("Login Response:", res.data);
+console.log("User Name:", res.data.user.name);
 function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");

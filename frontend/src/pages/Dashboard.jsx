@@ -2,7 +2,9 @@ import { useState } from "react";
 import Navbar from "../components/Navbar";
 import Sidebar from "../components/Sidebar";
 import "./Dashboard.css";
+const user = JSON.parse(localStorage.getItem("user"));
 
+console.log("Dashboard User:", user);
 function Dashboard() {
   const user = JSON.parse(localStorage.getItem("user"));
 
