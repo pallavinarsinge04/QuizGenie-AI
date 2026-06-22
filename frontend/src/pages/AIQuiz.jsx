@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import API from "../api/axios";
 import Sidebar from "../components/Sidebar";
 import Navbar from "../components/Navbar";
@@ -11,7 +11,29 @@ function AIQuiz() {
 
   const [selectedAnswers, setSelectedAnswers] = useState({});
   const [score, setScore] = useState(null);
+
   const [loading, setLoading] = useState(false);
+  const [timeLeft, setTimeLeft] = useState(0);
+  const [quizMarks, setQuizMarks] = useState(20);
+  const [submitted, setSubmitted] = useState(false);
+
+  // ================= TIMER =================
+  useEffect(() => {
+    if (timeLeft <= 0 || submitted || questions.length === 0) return;
+
+    const timer = setInterval(() => {
+      setTimeLeft((prev) => {
+        if (prev <= 1) {
+          clearInterval(timer);
+          autoSubmitQuiz();
+          return 0;
+        }
+        return prev - 1;
+      });
+    }, 1000);
+
+    return () => clearInterval(timer);
+  }, [timeLeft, submitted, questions]);
 
   // ================= GENERATE QUIZ =================
   const generateQuiz = async () => {
@@ -24,6 +46,7 @@ function AIQuiz() {
       setLoading(true);
       setScore(null);
       setSelectedAnswers({});
+      setSubmitted(false);
 
       const res = await API.post("/ai/generate", {
         topic,
@@ -31,8 +54,20 @@ function AIQuiz() {
       });
 
       setQuestions(res.data.questions || []);
+
+      // difficulty settings
+      if (difficulty === "Easy") {
+        setQuizMarks(20);
+        setTimeLeft(600);
+      } else if (difficulty === "Medium") {
+        setQuizMarks(50);
+        setTimeLeft(1200);
+      } else {
+        setQuizMarks(100);
+        setTimeLeft(1800);
+      }
     } catch (error) {
-      console.log(error.response?.data || error.message);
+      console.log(error);
       alert("Failed to generate quiz");
     } finally {
       setLoading(false);
@@ -40,44 +75,56 @@ function AIQuiz() {
   };
 
   // ================= SELECT ANSWER =================
-  const handleSelect = (qIndex, option) => {
+  const handleSelect = (index, option) => {
+    if (submitted) return;
+
     setSelectedAnswers((prev) => ({
       ...prev,
-      [qIndex]: option,
+      [index]: option,
     }));
   };
 
-  // ================= SUBMIT QUIZ =================
-  const submitQuiz = () => {
-    let newScore = 0;
+  // ================= AUTO SUBMIT =================
+  const autoSubmitQuiz = () => {
+    submitQuiz(true);
+  };
 
-    questions.forEach((q, index) => {
-      if (selectedAnswers[index] === q.answer) {
-        newScore++;
+  // ================= SUBMIT QUIZ =================
+  const submitQuiz = (auto = false) => {
+    let correct = 0;
+
+    questions.forEach((q, i) => {
+      if (selectedAnswers[i] === q.answer) {
+        correct++;
       }
     });
 
-    setScore(newScore);
+    const marksPerQ = quizMarks / questions.length;
+    const finalScore = correct * marksPerQ;
+
+    setScore(finalScore);
+    setSubmitted(true);
+
+    if (auto) {
+      alert("Time up! Quiz auto submitted.");
+    }
   };
+
+  const percentage =
+    score !== null ? (score / quizMarks) * 100 : 0;
 
   return (
     <div className="layout">
       <Sidebar />
-
       <div className="main-content">
         <Navbar />
 
-        {/* ================= HEADER ================= */}
-        <div>
-          <h1>🤖 AI Quiz Generator</h1>
-          
-        </div>
+        <h1>🤖 AI Quiz Generator</h1>
 
-        {/* ================= INPUT SECTION ================= */}
+        {/* INPUT */}
         <div className="quiz-box">
           <input
-            type="text"
-            placeholder="Enter Topic (React, Java, Python...)"
+            placeholder="Enter Topic"
             value={topic}
             onChange={(e) => setTopic(e.target.value)}
           />
@@ -96,28 +143,38 @@ function AIQuiz() {
           </button>
         </div>
 
-        {/* ================= SCORE ================= */}
-        {score !== null && (
-          <div className="score-box">
-            🎯 Your Score: {score} / {questions.length}
+        {/* TIMER */}
+        {questions.length > 0 && !submitted && (
+          <div className="timer-card">
+            ⏰ Time Left: {Math.floor(timeLeft / 60)}:
+            {(timeLeft % 60).toString().padStart(2, "0")}
           </div>
         )}
 
-        {/* ================= QUESTIONS ================= */}
-        <div className="question-list">
-          {questions.map((q, index) => (
-            <div className="question-card" key={index}>
-              <h3>
-                {index + 1}. {q.question}
-              </h3>
+        {/* SCORE */}
+        {score !== null && (
+          <div className="score-box">
+            <h2>Score: {score.toFixed(0)} / {quizMarks}</h2>
+            <h3>Percentage: {percentage.toFixed(0)}%</h3>
+            <h3>
+              Status: {percentage >= 40 ? "Pass" : "Fail"}
+            </h3>
+          </div>
+        )}
 
-              {q.options?.map((opt, i) => (
+        {/* QUESTIONS */}
+        <div className="question-list">
+          {questions.map((q, i) => (
+            <div className="question-card" key={i}>
+              <h3>{q.question}</h3>
+
+              {q.options?.map((opt, j) => (
                 <div
-                  key={i}
+                  key={j}
                   className={`option ${
-                    selectedAnswers[index] === opt ? "selected" : ""
+                    selectedAnswers[i] === opt ? "selected" : ""
                   }`}
-                  onClick={() => handleSelect(index, opt)}
+                  onClick={() => handleSelect(i, opt)}
                 >
                   {opt}
                 </div>
@@ -126,10 +183,14 @@ function AIQuiz() {
           ))}
         </div>
 
-        {/* ================= SUBMIT ================= */}
+        {/* SUBMIT */}
         {questions.length > 0 && (
-          <button className="submit-btn" onClick={submitQuiz}>
-            Submit Quiz
+          <button
+            className="submit-btn"
+            disabled={submitted}
+            onClick={() => submitQuiz(false)}
+          >
+            {submitted ? "Submitted" : "Submit Quiz"}
           </button>
         )}
       </div>

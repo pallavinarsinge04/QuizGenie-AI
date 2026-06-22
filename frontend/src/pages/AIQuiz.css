@@ -90,3 +90,26 @@
   border-radius: 10px;
   font-weight: bold;
 }
+.timer-card {
+  background: #2563eb;
+  color: white;
+  padding: 15px;
+  border-radius: 12px;
+  width: fit-content;
+  margin: 20px 0;
+  font-weight: 600;
+  font-size: 18px;
+}
+
+.score-box {
+  background: white;
+  padding: 25px;
+  border-radius: 16px;
+  margin: 20px 0;
+  box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+}
+
+.submit-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
