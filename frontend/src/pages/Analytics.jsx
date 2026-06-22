@@ -38,75 +38,44 @@ function Analytics() {
 
           </div>
 
-          <div className="chart-section">
+          <div className="progress-section">
 
-            <div className="chart-card">
-              <h2>Weekly Progress</h2>
+  <h2>📈 Learning Progress</h2>
 
-              <div className="bars">
-
-                <div className="bar">
-                  <span style={{ height: "45%" }}></span>
-                  <p>Mon</p>
-                </div>
-
-                <div className="bar">
-                  <span style={{ height: "70%" }}></span>
-                  <p>Tue</p>
-                </div>
-
-                <div className="bar">
-                  <span style={{ height: "80%" }}></span>
-                  <p>Wed</p>
-                </div>
-
-                <div className="bar">
-                  <span style={{ height: "55%" }}></span>
-                  <p>Thu</p>
-                </div>
-
-                <div className="bar">
-                  <span style={{ height: "90%" }}></span>
-                  <p>Fri</p>
-                </div>
-
-                <div className="bar">
-                  <span style={{ height: "75%" }}></span>
-                  <p>Sat</p>
-                </div>
-
-                <div className="bar">
-                  <span style={{ height: "95%" }}></span>
-                  <p>Sun</p>
-                </div>
-
-              </div>
-            </div>
-
-           <div className="chart-card">
-  <h2>Weekly Progress</h2>
-
-  <div className="bars">
-
-    {[
-      { day: "Mon", value: 45 },
-      { day: "Tue", value: 70 },
-      { day: "Wed", value: 80 },
-      { day: "Thu", value: 55 },
-      { day: "Fri", value: 90 },
-      { day: "Sat", value: 75 },
-      { day: "Sun", value: 95 },
-    ].map((item, i) => (
-      <div className="bar" key={i}>
-        <span style={{ height: `${item.value}%` }}></span>
-        <p>{item.day}</p>
-      </div>
-    ))}
-
+  {/* Weekly Completion */}
+  <div className="progress-item">
+    <div className="progress-label">
+      <span>Weekly Completion</span>
+      <span>75%</span>
+    </div>
+    <div className="progress-bar">
+      <div style={{ width: "75%" }}></div>
+    </div>
   </div>
-</div>
 
-          </div>
+  {/* Accuracy */}
+  <div className="progress-item">
+    <div className="progress-label">
+      <span>Accuracy</span>
+      <span>88%</span>
+    </div>
+    <div className="progress-bar">
+      <div style={{ width: "88%" }}></div>
+    </div>
+  </div>
+
+  {/* Study Streak */}
+  <div className="progress-item">
+    <div className="progress-label">
+      <span>Study Streak</span>
+      <span>60%</span>
+    </div>
+    <div className="progress-bar">
+      <div style={{ width: "60%" }}></div>
+    </div>
+  </div>
+
+</div>
 
           <div className="achievement-card">
 

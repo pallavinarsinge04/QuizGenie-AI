@@ -23,7 +23,12 @@ function Dashboard() {
   ];
 
   const generateQuiz = () => {
-    alert(`Generating quiz for ${topic} (${difficulty})`);
+    if (!topic) {
+      alert("Please enter a topic");
+      return;
+    }
+
+    alert(`Generating ${difficulty} quiz for ${topic}`);
   };
 
   return (
@@ -33,46 +38,127 @@ function Dashboard() {
       <div className="main-content">
         <Navbar />
 
-        {/* ===== HEADER ===== */}
-        <div>
-          <h1>Welcome {user?.name || "User"} 👋</h1>
-        
+        {/* Welcome Section */}
+        <div className="dashboard-header">
+          <div>
+            <div className="welcome-section">
+  <h1>
+    🤖 QuizGenie AI
+  </h1>
+
+  <h2>
+    Welcome Back, {user?.name} 👋
+  </h2>
+
+  <p>
+    Ready to continue your learning journey today?
+  </p>
+</div>
+            <p>
+              Ready to continue your learning journey today?
+            </p>
+          </div>
         </div>
 
-       
-        {/* ===== STATS ===== */}
-        <h2 className="section-title">Your Quiz Stats</h2>
+        {/* Statistics */}
+        <h2 className="section-title">📊 Your Quiz Stats</h2>
 
         <div className="stats-grid">
-          <div className="stat-card">Total Quizzes: {stats.total}</div>
-          <div className="stat-card">Attempted: {stats.attempted}</div>
-          <div className="stat-card">Avg Score: {stats.avgScore}%</div>
-          <div className="stat-card">Best Score: {stats.bestScore}%</div>
+          <div className="stat-card">
+            <h2>{stats.total}</h2>
+            <p>Total Quizzes</p>
+          </div>
+
+          <div className="stat-card">
+            <h2>{stats.attempted}</h2>
+            <p>Attempted</p>
+          </div>
+
+          <div className="stat-card">
+            <h2>{stats.avgScore}%</h2>
+            <p>Average Score</p>
+          </div>
+
+          <div className="stat-card">
+            <h2>{stats.bestScore}%</h2>
+            <p>Best Score</p>
+          </div>
         </div>
 
-        {/* ===== RECENT QUIZZES ===== */}
-        <h2 className="section-title">Recent Quizzes</h2>
+        {/* AI Quiz Generator */}
+        <h2 className="section-title">🤖 AI Quiz Generator</h2>
+
+        <div className="quiz-generator-card">
+          <input
+            type="text"
+            placeholder="Enter Quiz Topic..."
+            value={topic}
+            onChange={(e) => setTopic(e.target.value)}
+          />
+
+          <select
+            value={difficulty}
+            onChange={(e) => setDifficulty(e.target.value)}
+          >
+            <option>Easy</option>
+            <option>Medium</option>
+            <option>Hard</option>
+          </select>
+
+          <button onClick={generateQuiz}>
+            Generate Quiz
+          </button>
+        </div>
+
+        {/* Progress */}
+        <h2 className="section-title">📈 Learning Progress</h2>
+
+        <div className="progress-container">
+          <div className="progress-label">
+            <span>Overall Progress</span>
+            <span>70%</span>
+          </div>
+
+          <div className="progress-bar">
+            <div
+              className="progress-fill"
+              style={{ width: "70%" }}
+            ></div>
+          </div>
+        </div>
+
+        {/* Recent Quizzes */}
+        <h2 className="section-title">📝 Recent Quizzes</h2>
 
         <div className="quiz-list">
-          {recentQuizzes.map((q, i) => (
-            <div className="quiz-card" key={i}>
-              <h3>{q.topic}</h3>
-              <p>Score: {q.score}%</p>
+          {recentQuizzes.map((quiz, index) => (
+            <div className="quiz-card" key={index}>
+              <h3>{quiz.topic}</h3>
+              <p>Score: {quiz.score}%</p>
             </div>
           ))}
         </div>
 
-        {/* ===== PROGRESS ===== */}
-        <h2 className="section-title">Learning Progress</h2>
+        {/* Achievements */}
+        <h2 className="section-title">🏆 Achievements</h2>
 
-        <div className="progress-bar">
-          <div className="progress-fill" style={{ width: "70%" }}></div>
+        <div className="achievement-grid">
+          <div className="achievement-card">
+            🔥 7 Day Streak
+          </div>
+
+          <div className="achievement-card">
+            🎯 90% Accuracy
+          </div>
+
+          <div className="achievement-card">
+            📚 50 Flashcards Completed
+          </div>
+
+          <div className="achievement-card">
+            🥇 Top Learner
+          </div>
         </div>
-
-        {/* ===== QUICK ACTIONS ===== */}
-        <h2 className="section-title">Quick Actions</h2>
-
-       
       </div>
     </div>
   );
