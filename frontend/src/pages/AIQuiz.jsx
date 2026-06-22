@@ -40,58 +40,44 @@ function AIQuiz() {
 
   // ================= QUIZ GENERATION =================
   const generateQuiz = async () => {
-    try {
-      if (!topic) {
-        alert("Enter topic");
-        return;
-      }
-
-      setLoading(true);
-      setScore(null);
-      setSelectedAnswers({});
-      setSubmitted(false);
-      setCorrectMap({});
-
-      const res = await API.post("/ai/generate", {
-        topic,
-        difficulty,
-      });
-
-      let data = res.data.questions || [];
-
-      // ================= FIX QUESTION LIMITS =================
-      if (difficulty === "Easy") {
-        data = data.slice(0, 10);
-        setQuizMarks(20);
-        setTimeLeft(600);
-      } 
-      else if (difficulty === "Medium") {
-        data = data.slice(0, 30);
-        setQuizMarks(50);
-        setTimeLeft(1200);
-      } 
-      else {
-        data = data.slice(0, 50);
-        setQuizMarks(100);
-        setTimeLeft(1800);
-      }
-
-      setQuestions(data);
-
-      const map = {};
-      data.forEach((q, i) => {
-        map[i] = q.answer;
-      });
-      setCorrectMap(map);
-
-    } catch (err) {
-      console.log(err);
-      alert("Quiz generation failed");
-    } finally {
-      setLoading(false);
+  try {
+    if (!topic) {
+      alert("Enter topic");
+      return;
     }
-  };
 
+    setLoading(true);
+    setScore(null);
+    setSelectedAnswers({});
+    setSubmitted(false);
+
+    const res = await API.post("/ai/generate", {
+      topic,
+      difficulty,
+    });
+
+    const data = res.data.questions || [];
+
+    setQuestions(data);
+
+    const map = {};
+    data.forEach((q, i) => {
+      map[i] = q.answer;
+    });
+
+    setCorrectMap(map);
+
+    if (difficulty === "Easy") setQuizMarks(20);
+    else if (difficulty === "Medium") setQuizMarks(50);
+    else setQuizMarks(100);
+
+  } catch (err) {
+    console.log(err);
+    alert("Quiz generation failed");
+  } finally {
+    setLoading(false);
+  }
+};
   // ================= SELECT ANSWER =================
   const handleSelect = (i, opt) => {
     if (submitted) return;

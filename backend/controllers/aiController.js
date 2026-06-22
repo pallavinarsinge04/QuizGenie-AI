@@ -2,25 +2,22 @@ exports.generateQuiz = async (req, res) => {
   try {
     const { topic, difficulty } = req.body;
 
-    if (!topic) {
-      return res.status(400).json({
-        message: "Topic required",
+    let count = 10;
+
+    if (difficulty === "Easy") count = 10;
+    else if (difficulty === "Medium") count = 30;
+    else if (difficulty === "Hard") count = 50;
+
+    // 🔥 IMPORTANT: generate correct number of questions
+    const questions = [];
+
+    for (let i = 1; i <= count; i++) {
+      questions.push({
+        question: `${topic} Question ${i}`,
+        options: ["A", "B", "C", "D"],
+        answer: "A",
       });
     }
-
-    // MOCK DATA (for testing first)
-    const questions = [
-      {
-        question: `What is ${topic}?`,
-        options: ["Option A", "Option B", "Option C", "Option D"],
-        answer: "Option A",
-      },
-      {
-        question: `Why use ${topic}?`,
-        options: ["Speed", "UI", "Backend", "Database"],
-        answer: "UI",
-      },
-    ];
 
     return res.json({
       questions,
