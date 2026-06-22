@@ -6,68 +6,42 @@ import "./Register.css";
 function Register() {
 const navigate = useNavigate();
 
-const [formData, setFormData] = useState({
-name: "",
-email: "",
-password: "",
-confirmPassword: "",
-role: "student",
-skills: "",
-experience: "",
-location: "",
-phone: "",
-});
-
+const [name, setName] = useState("");
+const [email, setEmail] = useState("");
+const [password, setPassword] = useState("");
+const [role, setRole] = useState("student");
+const [skills, setSkills] = useState("");
+const [experience, setExperience] = useState("");
+const [location, setLocation] = useState("");
 const [loading, setLoading] = useState(false);
 
-const handleChange = (e) => {
-setFormData({
-...formData,
-[e.target.name]: e.target.value,
-});
-};
-
 const handleRegister = async () => {
-if (
-!formData.name ||
-!formData.email ||
-!formData.password
-) {
-alert("Please fill all required fields");
-return;
-}
-
-```
-if (formData.password !== formData.confirmPassword) {
-  alert("Passwords do not match");
-  return;
-}
-
 try {
-  setLoading(true);
+setLoading(true);
 
   const res = await axios.post(
     "http://localhost:5000/api/auth/register",
     {
-      name: formData.name,
-      email: formData.email,
-      password: formData.password,
-      role: formData.role,
-      skills: formData.skills,
-      experience: formData.experience,
-      location: formData.location,
-      phone: formData.phone,
+      name,
+      email,
+      password,
+      role,
+      skills,
+      experience,
+      location,
     }
   );
 
-  console.log(res.data);
+  console.log("Registration Success:", res.data);
 
   alert("Registration Successful!");
 
+  // Redirect to Login Page
   navigate("/");
 
 } catch (err) {
   console.log(err.response?.data || err.message);
+
   alert(
     err.response?.data?.message ||
     "Registration Failed"
@@ -75,58 +49,42 @@ try {
 } finally {
   setLoading(false);
 }
-```
+
 
 };
 
-return ( <div className="auth-container">
+return ( <div className="auth-container"> <div className="auth-card register-card">
 
-```
-  <div className="auth-card register-card">
 
     <div className="auth-header">
       <h2>Create Account 🚀</h2>
-      <p>
-        Join QuizGenie AI and start your learning journey
-      </p>
+      <p>Join QuizGenie AI and start learning smarter</p>
     </div>
 
     <input
       type="text"
-      name="name"
       placeholder="Full Name"
-      value={formData.name}
-      onChange={handleChange}
+      value={name}
+      onChange={(e) => setName(e.target.value)}
     />
 
     <input
       type="email"
-      name="email"
       placeholder="Email Address"
-      value={formData.email}
-      onChange={handleChange}
+      value={email}
+      onChange={(e) => setEmail(e.target.value)}
     />
 
     <input
       type="password"
-      name="password"
       placeholder="Password"
-      value={formData.password}
-      onChange={handleChange}
-    />
-
-    <input
-      type="password"
-      name="confirmPassword"
-      placeholder="Confirm Password"
-      value={formData.confirmPassword}
-      onChange={handleChange}
+      value={password}
+      onChange={(e) => setPassword(e.target.value)}
     />
 
     <select
-      name="role"
-      value={formData.role}
-      onChange={handleChange}
+      value={role}
+      onChange={(e) => setRole(e.target.value)}
     >
       <option value="student">Student</option>
       <option value="teacher">Teacher</option>
@@ -135,37 +93,23 @@ return ( <div className="auth-container">
 
     <input
       type="text"
-      name="skills"
       placeholder="Skills (React, Java, Python)"
-      value={formData.skills}
-      onChange={handleChange}
+      value={skills}
+      onChange={(e) => setSkills(e.target.value)}
     />
-
-    <select
-      name="experience"
-      value={formData.experience}
-      onChange={handleChange}
-    >
-      <option value="">Experience Level</option>
-      <option value="Beginner">Beginner</option>
-      <option value="Intermediate">Intermediate</option>
-      <option value="Advanced">Advanced</option>
-    </select>
 
     <input
       type="text"
-      name="location"
-      placeholder="Location"
-      value={formData.location}
-      onChange={handleChange}
+      placeholder="Experience Level"
+      value={experience}
+      onChange={(e) => setExperience(e.target.value)}
     />
 
     <input
-      type="tel"
-      name="phone"
-      placeholder="Mobile Number"
-      value={formData.phone}
-      onChange={handleChange}
+      type="text"
+      placeholder="Location"
+      value={location}
+      onChange={(e) => setLocation(e.target.value)}
     />
 
     <button
@@ -177,20 +121,14 @@ return ( <div className="auth-container">
         : "Register"}
     </button>
 
-    <div className="register-features">
-      <div>📚 AI Generated Quizzes</div>
-      <div>🏆 Certificates & Achievements</div>
-      <div>📊 Learning Analytics</div>
-      <div>🤖 AI Study Assistant</div>
-    </div>
-
     <div className="auth-link">
-      Already have an account?
-      <Link to="/"> Login</Link>
+      Already have an account?{" "}
+      <Link to="/">Login</Link>
     </div>
 
   </div>
 </div>
+
 
 );
 }

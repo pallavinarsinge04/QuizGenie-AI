@@ -4,109 +4,213 @@ import Navbar from "../components/Navbar";
 import "./QuizHistory.css";
 
 function QuizHistory() {
-  const [history] = useState([
-    {
-      id: 1,
-      topic: "React",
-      score: 9,
-      total: 10,
-      percentage: 90,
-      date: "20-Jun-2026",
-    },
-    {
-      id: 2,
-      topic: "Java",
-      score: 8,
-      total: 10,
-      percentage: 80,
-      date: "18-Jun-2026",
-    },
-    {
-      id: 3,
-      topic: "Python",
-      score: 10,
-      total: 10,
-      percentage: 100,
-      date: "15-Jun-2026",
-    },
-  ]);
+const [search, setSearch] = useState("");
 
-  const totalQuiz = history.length;
+const quizzes = [
+{
+_id: 1,
+topic: "React",
+score: 9,
+totalQuestions: 10,
+createdAt: "2026-06-20",
+},
+{
+_id: 2,
+topic: "Java",
+score: 8,
+totalQuestions: 10,
+createdAt: "2026-06-18",
+},
+{
+_id: 3,
+topic: "Python",
+score: 10,
+totalQuestions: 10,
+createdAt: "2026-06-15",
+},
+];
 
-  const bestScore = Math.max(...history.map((q) => q.percentage));
+const filteredQuizzes = quizzes.filter((quiz) =>
+quiz.topic.toLowerCase().includes(search.toLowerCase())
+);
 
-  const avg =
-    history.reduce((a, b) => a + b.percentage, 0) /
-    history.length;
+const totalQuizzes = quizzes.length;
 
-  return (
-    <div className="history-layout">
-      <Sidebar />
+const percentages = quizzes.map(
+(quiz) => (quiz.score / quiz.totalQuestions) * 100
+);
 
-      <div className="history-main">
-        <Navbar />
+const bestScore =
+percentages.length > 0
+? Math.max(...percentages)
+: 0;
 
-        <div className="history-container">
-          <h1>📝 Quiz History</h1>
+const avgScore =
+percentages.length > 0
+? (
+percentages.reduce((a, b) => a + b, 0) /
+percentages.length
+).toFixed(1)
+: 0;
 
-          <div className="history-cards">
-            <div className="stat-box">
-              <h2>{totalQuiz}</h2>
-              <p>Total Quizzes</p>
-            </div>
+const totalQuestionsSolved = quizzes.reduce(
+(sum, quiz) => sum + quiz.totalQuestions,
+0
+);
 
-            <div className="stat-box">
-              <h2>{bestScore}%</h2>
-              <p>Best Score</p>
-            </div>
+const passedCount = quizzes.filter(
+(quiz) =>
+(quiz.score / quiz.totalQuestions) * 100 >= 40
+).length;
 
-            <div className="stat-box">
-              <h2>{avg.toFixed(1)}%</h2>
-              <p>Average Score</p>
-            </div>
-          </div>
+const latestTopic =
+quizzes.length > 0 ? quizzes[0].topic : "N/A";
 
-          <input
-            className="search"
-            placeholder="Search by Topic..."
-          />
+return ( <div className="layout"> <Sidebar />
 
-          <table className="history-table">
-            <thead>
-              <tr>
-                <th>Topic</th>
-                <th>Score</th>
-                <th>Total</th>
-                <th>Percentage</th>
-                <th>Date</th>
-                <th>Status</th>
-              </tr>
-            </thead>
+```
+  <div className="main-content">
+    <Navbar />
 
-            <tbody>
-              {history.map((quiz) => (
-                <tr key={quiz.id}>
+    <div className="history-container">
+      <h1>📜 Quiz History</h1>
+
+      {/* Stats */}
+      <div className="history-stats">
+
+        <div className="stat-card">
+          <h2>{totalQuizzes}</h2>
+          <p>Total Quizzes</p>
+        </div>
+
+        <div className="stat-card">
+          <h2>{bestScore}%</h2>
+          <p>Best Score</p>
+        </div>
+
+        <div className="stat-card">
+          <h2>{avgScore}%</h2>
+          <p>Average Score</p>
+        </div>
+
+        <div className="stat-card">
+          <h2>{passedCount}</h2>
+          <p>Passed Quizzes</p>
+        </div>
+
+        <div className="stat-card">
+          <h2>{totalQuestionsSolved}</h2>
+          <p>Questions Solved</p>
+        </div>
+
+        <div className="stat-card">
+          <h2>{latestTopic}</h2>
+          <p>Latest Topic</p>
+        </div>
+
+      </div>
+
+      {/* Search */}
+      <div className="search-box">
+        <input
+          type="text"
+          placeholder="Search by Topic..."
+          value={search}
+          onChange={(e) =>
+            setSearch(e.target.value)
+          }
+        />
+      </div>
+
+      {/* Table */}
+      <div className="history-table">
+        <table>
+          <thead>
+            <tr>
+              <th>Topic</th>
+              <th>Score</th>
+              <th>Total</th>
+              <th>Percentage</th>
+              <th>Date</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            {filteredQuizzes.map((quiz) => {
+              const percentage = Math.round(
+                (quiz.score /
+                  quiz.totalQuestions) *
+                  100
+              );
+
+              return (
+                <tr key={quiz._id}>
                   <td>{quiz.topic}</td>
                   <td>{quiz.score}</td>
-                  <td>{quiz.total}</td>
-                  <td>{quiz.percentage}%</td>
-                  <td>{quiz.date}</td>
+                  <td>{quiz.totalQuestions}</td>
+                  <td>{percentage}%</td>
+                  <td>
+                    {new Date(
+                      quiz.createdAt
+                    ).toLocaleDateString()}
+                  </td>
 
                   <td>
-                    {quiz.percentage >= 70 ? (
-                      <span className="pass">Pass</span>
-                    ) : (
-                      <span className="fail">Fail</span>
-                    )}
+                    <span
+                      className={
+                        percentage >= 40
+                          ? "pass"
+                          : "fail"
+                      }
+                    >
+                      {percentage >= 40
+                        ? "Pass"
+                        : "Fail"}
+                    </span>
                   </td>
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              );
+            })}
+          </tbody>
+        </table>
+      </div>
+
+      {/* Performance */}
+      <div className="performance-card">
+        <h2>📈 Performance Summary</h2>
+
+        <div className="progress-item">
+          <p>Average Performance</p>
+          <div className="progress-bar">
+            <div
+              className="progress-fill"
+              style={{
+                width: `${avgScore}%`,
+              }}
+            ></div>
+          </div>
+        </div>
+
+        <div className="progress-item">
+          <p>Best Performance</p>
+          <div className="progress-bar">
+            <div
+              className="progress-fill best"
+              style={{
+                width: `${bestScore}%`,
+              }}
+            ></div>
+          </div>
         </div>
       </div>
+
     </div>
-  );
+  </div>
+</div>
+
+
+);
 }
 
 export default QuizHistory;
