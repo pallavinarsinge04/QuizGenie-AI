@@ -4,27 +4,41 @@ const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
 });
 
+// ================= SAFE PARSER =================
+function safeParse(text) {
+  try {
+    return JSON.parse(text);
+  } catch (err) {
+    const cleaned = text
+      .replace(/```json/g, "")
+      .replace(/```/g, "")
+      .trim();
+
+    return JSON.parse(cleaned);
+  }
+}
+
+// ================= GENERATE QUIZ =================
 exports.generateQuiz = async (req, res) => {
   try {
     const { topic, difficulty } = req.body;
 
     let count = 10;
-
     if (difficulty === "Easy") count = 10;
     else if (difficulty === "Medium") count = 30;
     else if (difficulty === "Hard") count = 50;
 
     const prompt = `
-Generate ${count} multiple-choice questions on "${topic}".
+Create ${count} multiple choice questions on "${topic}".
 Difficulty: ${difficulty}
 
-Return ONLY valid JSON in this format:
+Return ONLY valid JSON:
 
 {
   "questions": [
     {
-      "question": "...",
-      "options": ["A", "B", "C", "D"],
+      "question": "string",
+      "options": ["A","B","C","D"],
       "answer": "correct option"
     }
   ]
@@ -36,7 +50,8 @@ Return ONLY valid JSON in this format:
       messages: [
         {
           role: "system",
-          content: "You are an expert quiz generator. Return only JSON.",
+          content:
+            "You are a strict JSON generator. Always return only valid JSON. No markdown.",
         },
         {
           role: "user",
@@ -48,15 +63,17 @@ Return ONLY valid JSON in this format:
 
     let content = response.choices[0].message.content;
 
-    // convert string → JSON
-    const data = JSON.parse(content);
+    console.log("RAW GPT RESPONSE:", content); // 🔥 IMPORTANT DEBUG
+
+    const data = safeParse(content);
 
     return res.json(data);
   } catch (err) {
-    console.log("AI ERROR:", err.message);
+    console.log("AI ERROR:", err);
 
     return res.status(500).json({
-      message: "AI quiz generation failed",
+      message: "Quiz generation failed",
+      error: err.message,
     });
   }
 };
