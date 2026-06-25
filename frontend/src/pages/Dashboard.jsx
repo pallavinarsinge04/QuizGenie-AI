@@ -141,26 +141,7 @@ function Dashboard() {
           ))}
         </div>
 
-        {/* Achievements */}
-        <h2 className="section-title">🏆 Achievements</h2>
-
-        <div className="achievement-grid">
-          <div className="achievement-card">
-            🔥 7 Day Streak
-          </div>
-
-          <div className="achievement-card">
-            🎯 90% Accuracy
-          </div>
-
-          <div className="achievement-card">
-            📚 50 Flashcards Completed
-          </div>
-
-          <div className="achievement-card">
-            🥇 Top Learner
-          </div>
-        </div>
+        
       </div>
     </div>
   );

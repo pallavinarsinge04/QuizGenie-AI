@@ -6,85 +6,134 @@ import "./CommunityGroup.css";
 function CommunityGroup() {
   const { id } = useParams();
 
-  const groupData = {
+  const groups = {
     1: {
-      name: "React Developers",
+      title: "React Developers",
       description:
-        "Learn React, Hooks, Redux, React Router, Context API, and build modern web applications.",
-      topics: [
-        "React Fundamentals",
+        "React is a JavaScript library used to build modern and interactive user interfaces.",
+
+      learning: [
+        "What is React?",
+        "JSX",
+        "Components",
+        "Props & State",
+        "Hooks",
         "React Router",
         "Redux Toolkit",
-        "Hooks",
-        "Projects & Interview Questions",
+      ],
+
+      projects: [
+        "Todo App",
+        "Weather App",
+        "E-Commerce Website",
+        "Quiz Platform",
+        "Chat Application",
+      ],
+
+      interview: [
+        "What is Virtual DOM?",
+        "Difference between State and Props?",
+        "What are Hooks?",
+        "Explain useEffect Hook.",
       ],
     },
+
     2: {
-      name: "Python Learners",
+      title: "Python Learners",
       description:
-        "Master Python programming, Django, Flask, Data Science, AI, and Automation.",
-      topics: [
-        "Python Basics",
+        "Python is one of the most popular programming languages for AI, Data Science and Backend Development.",
+
+      learning: [
+        "Variables",
+        "Functions",
         "OOP",
+        "File Handling",
         "Django",
         "Flask",
         "Machine Learning",
       ],
-    },
-    3: {
-      name: "Java Programming",
-      description:
-        "Learn Core Java, Advanced Java, Spring Boot, DSA, and Interview Preparation.",
-      topics: [
-        "Core Java",
-        "Collections",
-        "JDBC",
-        "Spring Boot",
-        "DSA",
+
+      projects: [
+        "Weather App",
+        "Student Management System",
+        "AI Chatbot",
+        "Quiz App",
+        "Face Detection System",
+      ],
+
+      interview: [
+        "What is Python?",
+        "Explain List vs Tuple",
+        "What is OOP?",
+        "What are Decorators?",
       ],
     },
-    4: {
-      name: "Web Development",
+
+    3: {
+      title: "Java Programming",
       description:
-        "Full Stack Development using HTML, CSS, JavaScript, React, Node.js and MongoDB.",
-      topics: [
-        "HTML & CSS",
+        "Java is an object-oriented programming language widely used in enterprise applications and Android Development.",
+
+      learning: [
+        "Core Java",
+        "OOP Concepts",
+        "Collections Framework",
+        "Exception Handling",
+        "Multithreading",
+        "JDBC",
+        "Spring Boot",
+      ],
+
+      projects: [
+        "Bank Management System",
+        "Library Management System",
+        "Attendance App",
+        "Quiz Application",
+      ],
+
+      interview: [
+        "What is JVM?",
+        "What is JDK?",
+        "Explain Inheritance",
+        "Difference between Interface and Abstract Class",
+      ],
+    },
+
+    4: {
+      title: "Web Development",
+      description:
+        "Learn Full Stack Web Development from beginner to advanced level.",
+
+      learning: [
+        "HTML",
+        "CSS",
         "JavaScript",
         "React",
         "Node.js",
+        "Express.js",
         "MongoDB",
       ],
-    },
-    5: {
-      name: "AI & Machine Learning",
-      description:
-        "Explore AI, ChatGPT, Deep Learning, Neural Networks and Machine Learning.",
-      topics: [
-        "Machine Learning",
-        "Deep Learning",
-        "Neural Networks",
-        "ChatGPT APIs",
-        "AI Projects",
+
+      projects: [
+        "Portfolio Website",
+        "Blog Website",
+        "E-Commerce Website",
+        "Social Media App",
       ],
-    },
-    6: {
-      name: "Data Structures & Algorithms",
-      description:
-        "Practice coding problems and prepare for technical interviews.",
-      topics: [
-        "Arrays",
-        "Linked Lists",
-        "Trees",
-        "Graphs",
-        "Dynamic Programming",
+
+      interview: [
+        "What is HTML?",
+        "Difference between let and var?",
+        "What is React?",
+        "Explain REST API",
       ],
     },
   };
 
-  const group = groupData[id];
+  const group = groups[id];
 
   if (!group) {
-    return <h2>Community Not Found</h2>;
+    return <h1>Community Not Found</h1>;
   }
 
   return (
@@ -94,54 +143,74 @@ function CommunityGroup() {
       <div className="main-content">
         <Navbar />
 
-        <div className="group-container">
-          <h1>🚀 {group.name}</h1>
+        <div className="community-page">
 
-          <p className="group-description">
+          <h1>🚀 {group.title}</h1>
+
+          <p className="community-description">
             {group.description}
           </p>
 
-          <div className="group-card">
-            <h2>📚 Topics Covered</h2>
+          {/* Learning Section */}
+          <div className="community-card">
+            <h2>📚 Learning Topics</h2>
 
             <ul>
-              {group.topics.map((topic, index) => (
-                <li key={index}>{topic}</li>
+              {group.learning.map((item, index) => (
+                <li key={index}>{item}</li>
               ))}
             </ul>
           </div>
 
-          <div className="group-card">
-            <h2>💬 Community Discussion</h2>
-
-            <div className="post">
-              <strong>Admin:</strong>
-              <p>
-                Welcome to {group.name}! Introduce yourself and
-                share your learning goals.
-              </p>
-            </div>
-
-            <div className="post">
-              <strong>Member:</strong>
-              <p>
-                I'm learning this technology and looking for
-                project ideas.
-              </p>
-            </div>
-          </div>
-
-          <div className="group-card">
-            <h2>🏆 Benefits</h2>
+          {/* Projects */}
+          <div className="community-card">
+            <h2>💻 Projects</h2>
 
             <ul>
-              <li>Daily Discussions</li>
-              <li>Interview Questions</li>
-              <li>Project Sharing</li>
-              <li>Study Resources</li>
-              <li>Community Support</li>
+              {group.projects.map((project, index) => (
+                <li key={index}>{project}</li>
+              ))}
             </ul>
           </div>
+
+          {/* Interview */}
+          <div className="community-card">
+            <h2>❓ Interview Questions</h2>
+
+            <ul>
+              {group.interview.map((question, index) => (
+                <li key={index}>{question}</li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Discussion */}
+          <div className="community-card">
+            <h2>💬 Community Discussion</h2>
+
+            <div className="discussion">
+              <strong>Admin:</strong>
+              <p>
+                Welcome to {group.title}. Share your
+                projects and ask questions here.
+              </p>
+            </div>
+
+            <div className="discussion">
+              <strong>Student:</strong>
+              <p>
+                Can someone suggest beginner projects?
+              </p>
+            </div>
+
+            <div className="discussion">
+              <strong>Developer:</strong>
+              <p>
+                I completed my first project today 🎉
+              </p>
+            </div>
+          </div>
+
         </div>
       </div>
     </div>
