@@ -4,13 +4,19 @@ const quizSchema = new mongoose.Schema(
   {
     userId: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "User",
+      required: true,
     },
+
     topic: String,
+
     score: Number,
+
     totalQuestions: Number,
+
     percentage: Number,
+
     difficulty: String,
+
     completedAt: {
       type: Date,
       default: Date.now,
@@ -19,4 +25,7 @@ const quizSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-module.exports = mongoose.model("Quiz", quizSchema);
+module.exports = mongoose.model(
+  "Quiz",
+  quizSchema
+);
