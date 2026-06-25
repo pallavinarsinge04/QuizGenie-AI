@@ -2,19 +2,21 @@ const mongoose = require("mongoose");
 
 const quizSchema = new mongoose.Schema(
   {
+    userId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+    },
     topic: String,
-
     score: Number,
-
     totalQuestions: Number,
-
     percentage: Number,
-
-    userId: String,
+    difficulty: String,
+    completedAt: {
+      type: Date,
+      default: Date.now,
+    },
   },
-  {
-    timestamps: true,
-  }
+  { timestamps: true }
 );
 
 module.exports = mongoose.model("Quiz", quizSchema);

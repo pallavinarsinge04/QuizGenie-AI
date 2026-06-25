@@ -1,24 +1,30 @@
-const QuizResult = require("../models/QuizResult");
+const Quiz = require("../models/Quiz");
 
-exports.saveResult = async (req, res) => {
+exports.submitQuiz = async (req, res) => {
   try {
-    const result = await QuizResult.create(req.body);
+    const {
+      userId,
+      topic,
+      score,
+      totalQuestions,
+      difficulty,
+    } = req.body;
 
-    res.status(201).json(result);
-  } catch (error) {
-    res.status(500).json({
-      message: error.message,
+    const percentage = (
+      (score / totalQuestions) *
+      100
+    ).toFixed(1);
+
+    const quiz = await Quiz.create({
+      userId,
+      topic,
+      score,
+      totalQuestions,
+      percentage,
+      difficulty,
     });
-  }
-};
 
-exports.getResults = async (req, res) => {
-  try {
-    const results = await QuizResult.find().sort({
-      createdAt: -1,
-    });
-
-    res.json(results);
+    res.status(201).json(quiz);
   } catch (error) {
     res.status(500).json({
       message: error.message,
