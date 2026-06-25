@@ -1,14 +1,16 @@
 const express = require("express");
-
 const router = express.Router();
 
 const {
-  saveResult,
-  getResults,
+  submitQuiz,
+  getAnalytics,
 } = require("../controllers/quizController");
 
-router.post("/", saveResult);
+router.post("/submit", submitQuiz);
 
-router.get("/", getResults);
+router.get(
+  "/analytics/:userId",
+  getAnalytics
+);
 
 module.exports = router;
