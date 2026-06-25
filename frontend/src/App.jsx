@@ -11,7 +11,7 @@ import Community from "./pages/Community";
 import ChatAssistant from "./pages/ChatAssistant";
 import Leaderboard from "./pages/Leaderboard";
 import Profile from "./pages/Profile";
-
+import CommunityGroup from "./pages/CommunityGroup";
 function App() {
   return (
     <Routes>
@@ -26,7 +26,7 @@ function App() {
       <Route path="/chat" element={<ChatAssistant />} />
       <Route path="/leaderboard" element={<Leaderboard />} />
       <Route path="/profile" element={<Profile />} />
-
+      <Route path="/community/:id" element={<CommunityGroup />}/>
       <Route path="*" element={<h1>404 - Page Not Found</h1>} />
     </Routes>
   );
