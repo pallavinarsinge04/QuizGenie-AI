@@ -19,8 +19,6 @@ function Sidebar() {
 
       <Link to="/community">👥 Community</Link>
 
-      <Link to="/chat">💬 AI Chat</Link>
-
       <Link to="/leaderboard">🥇 Leaderboard</Link>
 
       <Link to="/profile">👤 Profile</Link>
