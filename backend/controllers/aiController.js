@@ -1,35 +1,35 @@
+// aiController.js
+
 const javaQuestions = require("../data/javaQuestions");
-const reactQuestions = require("../data/reactQuestions");
 const pythonQuestions = require("../data/pythonQuestions");
+const reactQuestions = require("../data/reactQuestions");
 
 exports.generateQuiz = async (req, res) => {
-  const { topic, difficulty } = req.body;
+  try {
+    const { topic, difficulty } = req.body;
 
-  let questions = [];
+    let questions = [];
 
-  if (topic.toLowerCase() === "java") {
-    questions = javaQuestions;
-  } else if (topic.toLowerCase() === "react") {
-    questions = reactQuestions;
-  } else if (topic.toLowerCase() === "python") {
-    questions = pythonQuestions;
+    if (topic.toLowerCase() === "java") {
+      questions = javaQuestions;
+    } else if (topic.toLowerCase() === "python") {
+      questions = pythonQuestions;
+    } else if (topic.toLowerCase() === "react") {
+      questions = reactQuestions;
+    }
+
+    let count = 10;
+
+    if (difficulty === "Medium") count = 30;
+    if (difficulty === "Hard") count = 50;
+
+    res.json({
+      questions: questions.slice(0, count),
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: "Quiz generation failed",
+      error: error.message,
+    });
   }
-
-  let count = 10;
-
-  if (difficulty === "Easy") count = 10;
-  if (difficulty === "Medium") count = 30;
-  if (difficulty === "Hard") count = 50;
-
-  const result = [];
-
-  while (result.length < count) {
-    result.push(
-      questions[Math.floor(Math.random() * questions.length)]
-    );
-  }
-
-  res.json({
-    questions: result,
-  });
 };

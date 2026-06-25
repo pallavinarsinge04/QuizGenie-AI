@@ -3,31 +3,69 @@ import "./Profile.css";
 import { useState } from "react";
 
 function Profile() {
-  const [image, setImage] = useState(null);
+  const storedUser =
+    JSON.parse(localStorage.getItem("user")) || {};
 
-  const user = {
-    name: "John Doe",
-    email: "john@example.com",
-    role: "Student",
-    skills: ["React", "Node.js", "MongoDB", "JavaScript"],
-    location: "India",
-  };
+  const [editing, setEditing] = useState(false);
+
+  const [user, setUser] = useState({
+    name: storedUser.name || "",
+    email: storedUser.email || "",
+    role: storedUser.role || "Student",
+    location: storedUser.location || "India",
+    skills: storedUser.skills || [],
+  });
+
+  const [skillsInput, setSkillsInput] = useState(
+    user.skills.join(", ")
+  );
+
+  const [image, setImage] = useState(
+    localStorage.getItem("profileImage") || null
+  );
 
   const handleImageChange = (e) => {
     const file = e.target.files[0];
-    if (file) setImage(URL.createObjectURL(file));
+
+    if (file) {
+      const imageUrl = URL.createObjectURL(file);
+
+      setImage(imageUrl);
+
+      localStorage.setItem(
+        "profileImage",
+        imageUrl
+      );
+    }
+  };
+
+  const handleSave = () => {
+    const updatedUser = {
+      ...user,
+      skills: skillsInput
+        .split(",")
+        .map((s) => s.trim())
+        .filter(Boolean),
+    };
+
+    setUser(updatedUser);
+
+    localStorage.setItem(
+      "user",
+      JSON.stringify(updatedUser)
+    );
+
+    alert("✅ Profile Updated Successfully");
+
+    setEditing(false);
   };
 
   return (
     <div className="profile-layout">
-
       <Sidebar />
 
       <div className="profile-content">
-
-        {/* HEADER */}
         <div className="profile-header">
-
           <div className="avatar-box">
             <img
               src={
@@ -39,34 +77,91 @@ function Profile() {
 
             <label className="edit-icon">
               ✏️
-              <input type="file" hidden onChange={handleImageChange} />
+              <input
+                type="file"
+                hidden
+                onChange={handleImageChange}
+              />
             </label>
           </div>
 
           <div>
-            <h1>{user.name}</h1>
+            {editing ? (
+              <input
+                value={user.name}
+                onChange={(e) =>
+                  setUser({
+                    ...user,
+                    name: e.target.value,
+                  })
+                }
+              />
+            ) : (
+              <h1>{user.name}</h1>
+            )}
+
             <p>{user.role}</p>
           </div>
-
         </div>
 
         {/* PERSONAL INFO */}
         <section className="section">
           <h2>Personal Info</h2>
-          <p>Email: {user.email}</p>
-          <p>Location: {user.location}</p>
+
+          {editing ? (
+            <>
+              <input
+                value={user.email}
+                onChange={(e) =>
+                  setUser({
+                    ...user,
+                    email: e.target.value,
+                  })
+                }
+              />
+
+              <input
+                value={user.location}
+                onChange={(e) =>
+                  setUser({
+                    ...user,
+                    location: e.target.value,
+                  })
+                }
+              />
+            </>
+          ) : (
+            <>
+              <p>Email: {user.email}</p>
+              <p>Location: {user.location}</p>
+            </>
+          )}
         </section>
 
         {/* SKILLS */}
         <section className="section">
           <h2>Skills</h2>
-          <div className="skills">
-            {user.skills.map((skill, i) => (
-              <span key={i} className="skill-tag">
-                {skill}
-              </span>
-            ))}
-          </div>
+
+          {editing ? (
+            <input
+              value={skillsInput}
+              onChange={(e) =>
+                setSkillsInput(e.target.value)
+              }
+              placeholder="React, Java, Python"
+            />
+          ) : (
+            <div className="skills">
+              {user.skills.map((skill, i) => (
+                <span
+                  key={i}
+                  className="skill-tag"
+                >
+                  {skill}
+                </span>
+              ))}
+            </div>
+          )}
         </section>
 
         {/* STATS */}
@@ -90,6 +185,7 @@ function Profile() {
         {/* ACTIVITY */}
         <section className="section">
           <h2>Recent Activity</h2>
+
           <ul className="activity">
             <li>✔ Completed React Quiz</li>
             <li>✔ Earned Certificate in JS</li>
@@ -100,6 +196,7 @@ function Profile() {
         {/* ACHIEVEMENTS */}
         <section className="section">
           <h2>Achievements</h2>
+
           <div className="badges">
             <span>🏆 Top Scorer</span>
             <span>🚀 Fast Learner</span>
@@ -107,11 +204,21 @@ function Profile() {
           </div>
         </section>
 
-        {/* ACTION */}
-        <button className="edit-btn">
-          Edit Profile
-        </button>
-
+        {!editing ? (
+          <button
+            className="edit-btn"
+            onClick={() => setEditing(true)}
+          >
+            Edit Profile
+          </button>
+        ) : (
+          <button
+            className="edit-btn"
+            onClick={handleSave}
+          >
+            Save Changes
+          </button>
+        )}
       </div>
     </div>
   );
