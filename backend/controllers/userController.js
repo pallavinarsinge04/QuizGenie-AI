@@ -1,48 +1,37 @@
 const User = require("../models/User");
 
-// ================= UPDATE PROFILE =================
-exports.updateProfile = async (req, res) => {
-  try {
-    const { userId, name, skills, profilePic } = req.body;
+exports.uploadProfile = async (req,res)=>{
 
-    const updatedUser = await User.findByIdAndUpdate(
-      userId,
-      {
-        name,
-        skills: skills ? skills.split(",") : [],
-        profilePic,
-      },
-      { new: true }
-    );
+    try{
 
-    res.json({
-      message: "Profile updated successfully",
-      user: updatedUser,
-    });
-  } catch (err) {
-    res.status(500).json({ message: err.message });
-  }
-};
+        const userId=req.params.id;
 
-// ================= UPLOAD RESUME =================
-exports.uploadResume = async (req, res) => {
-  try {
-    const userId = req.body.userId;
+        const image=req.file.filename;
 
-    const filePath = req.file.path;
+        const user=await User.findByIdAndUpdate(
 
-    const user = await User.findByIdAndUpdate(
-      userId,
-      { resume: filePath },
-      { new: true }
-    );
+            userId,
 
-    res.json({
-      message: "Resume uploaded successfully",
-      resume: filePath,
-      user,
-    });
-  } catch (err) {
-    res.status(500).json({ message: err.message });
-  }
+            {
+                profileImage:image,
+            },
+
+            {
+                new:true,
+            }
+
+        );
+
+        res.json(user);
+
+    }
+
+    catch(error){
+
+        res.status(500).json({
+            message:error.message,
+        });
+
+    }
+
 };

@@ -1,11 +1,23 @@
-const express = require("express");
+const express=require("express");
 
-const router = express.Router();
+const router=express.Router();
 
-router.get("/", (req, res) => {
-  res.json({
-    message: "User Route Working",
-  });
-});
+const upload=require("../middleware/upload");
 
-module.exports = router;
+const {
+
+uploadProfile,
+
+}=require("../controllers/userController");
+
+router.put(
+
+"/upload/:id",
+
+upload.single("image"),
+
+uploadProfile
+
+);
+
+module.exports=router;

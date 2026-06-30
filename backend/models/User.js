@@ -6,9 +6,10 @@ const userSchema = new mongoose.Schema({
   password: String,
   role: String,
 
-  profilePic: String,
-  skills: [String],
-
+ profileImage: {
+    type: String,
+    default: "",
+},
   resume: String,
 });
 
